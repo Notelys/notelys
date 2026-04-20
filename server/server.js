@@ -956,6 +956,23 @@ server.post("/user-written-blogs", verifyJWT, (req, res) => {
     
 })
 
+// count of user written blogs
+server.post("/user-written-blogs-count", verifyJWT, (req, res) => {
+
+    let user_id = req.user;
+    let { draft, query } = req.body;
+
+    Blog.countDocuments({ author: user_id, draft, title: new RegExp(query, 'i') })
+    .then(count => {
+        return res.status(200).json({ totalDocs: count });
+    })
+    .catch(err => {
+        console.log(err);
+        return res.status(500).json({ err: err.message });
+    })
+
+})
+
 server.listen(PORT, ()=>{
     console.log('listening on port : ' + PORT);    
 })
