@@ -7,7 +7,7 @@ import InPageNavigation from "../components/inpage-navigation.component";
 import Loader from "../components/loader.component";
 import NoDataMessage from "../components/nodata.component";
 import AnimationWrapper from "../common/page-animation";
-import ManagePublishedBlogsCard from "../components/manage-blogcard.component";
+import { ManagePublishedBlogsCard, ManageDraftBlogPost } from "../components/manage-blogcard.component";
 
 const ManageBlogs = () => {
 
@@ -101,7 +101,7 @@ const ManageBlogs = () => {
 
             <InPageNavigation routes={["Published Blogs", "Draft Blogs"]}>
 
-                {
+                {// Published blogs
 
                     blogs == null ? <Loader /> : 
                     blogs.results.length ? 
@@ -121,7 +121,27 @@ const ManageBlogs = () => {
                     : <NoDataMessage message="No published blogs" />
 
                 }
-                <h1>This is Drafttttttttttt</h1>
+                
+                {// Draft blogs
+
+                    drafts == null ? <Loader /> : 
+                    drafts.results.length ? 
+                        
+                        <>
+                        {
+                            drafts.results.map((blog, i) => {
+                                return <AnimationWrapper key={i} transition={{ delay: i * 0.04 }}>
+                                    
+                                    <ManageDraftBlogPost blog={blog} index={i+1} />
+
+                                </AnimationWrapper>
+                            })
+                        }
+                        </>
+                    
+                    : <NoDataMessage message="No draft blogs" />
+
+                }
 
             </InPageNavigation>
 
