@@ -977,7 +977,7 @@ server.post("/user-written-blogs-count", verifyJWT, (req, res) => {
 server.post("/delete-blog", verifyJWT, (req, res) => {
 
     let user_id = req.user;
-    let blog_id = req.body;
+    let { blog_id } = req.body;
 
     Blog.findOneAndDelete({ blog_id })
     .then(blog => {
