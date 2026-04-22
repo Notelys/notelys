@@ -8,6 +8,7 @@ import Loader from "../components/loader.component";
 import NoDataMessage from "../components/nodata.component";
 import AnimationWrapper from "../common/page-animation";
 import { ManagePublishedBlogsCard, ManageDraftBlogPost } from "../components/manage-blogcard.component";
+import LoadMoreDataBtn from "../components/load-more.component";
 
 const ManageBlogs = () => {
 
@@ -116,6 +117,9 @@ const ManageBlogs = () => {
                                 </AnimationWrapper>
                             })
                         }
+
+                        <LoadMoreDataBtn state={blogs} fetchDataFun={getBlogs} additionalParam={{ draft: false, deletedDocCount: blogs.deletedDocCount }} />
+
                         </>
                     
                     : <NoDataMessage message="No published blogs" />
@@ -137,6 +141,9 @@ const ManageBlogs = () => {
                                 </AnimationWrapper>
                             })
                         }
+
+                        <LoadMoreDataBtn state={drafts} fetchDataFun={getBlogs} additionalParam={{ draft: true, deletedDocCount: drafts.deletedDocCount }} />
+
                         </>
                     
                     : <NoDataMessage message="No draft blogs" />
