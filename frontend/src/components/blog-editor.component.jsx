@@ -133,7 +133,7 @@ const BlogEditor = () => {
                     toast.success("Saved 👍");
                 
                     setTimeout(() => {
-                        navigate("/"); // Will Navigate to Dashboard instead of home once we'll made that.
+                        navigate("/dashboard/blogs?tab=draft");
                     }, 500);
                 })
                 .catch(( { response } ) => {

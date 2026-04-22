@@ -96,7 +96,7 @@ const PublishForm = () => {
             toast.success("Published 👍");
 
             setTimeout(() => {
-                navigate("/"); // Will Navigate to Dashboard instead of home once we'll made that.
+                navigate("/dashboard/blogs");
             }, 500);
         })
         .catch(( { response } ) => {
