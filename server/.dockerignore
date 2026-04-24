@@ -18,8 +18,8 @@ npm-debug.log*
 *.md
 requests.rest
 
-# Firebase credentials (must be handled via Secret Manager in prod)
-*.json
+# Firebase service account key (use Secret Manager in production)
+blog-app-82817-firebase-adminsdk-fbsvc-7463cad566.json
 
 # OS artifacts
 .DS_Store
