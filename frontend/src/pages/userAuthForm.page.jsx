@@ -4,7 +4,7 @@ import InputBox from "../components/input.component";
 import googleIcon from "../imgs/google.png";
 import { Link, Navigate } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
-import axios from "axios";
+import api from "../common/api";
 import { storeInSession } from "../common/session";
 import { UserContext } from "../App";
 import { authWithGoogle } from "../common/firebase";
@@ -18,7 +18,7 @@ const UserAuthForm = ( {type} ) => {
     
     const userAuthThroughServer = (serverRoute, formData) => {
         
-        axios.post(import.meta.env.VITE_SERVER_DOMAIN + serverRoute, formData)
+        api.post(serverRoute, formData)
         .then(({ data }) => {
             storeInSession("user", JSON.stringify(data))
             

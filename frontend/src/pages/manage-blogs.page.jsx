@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../App";
 import { filterPaginationData } from "../common/filter-pagination-data";
-import axios from "axios";
+import api from "../common/api";
 import { Toaster } from "react-hot-toast";
 import InPageNavigation from "../components/inpage-navigation.component";
 import Loader from "../components/loader.component";
@@ -23,12 +23,8 @@ const ManageBlogs = () => {
 
     const getBlogs = ({ page, draft, deletedDocCount = 0 }) => {
 
-        axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/user-written-blogs", {
+        api.post("/user-written-blogs", {
             page, draft, query, deletedDocCount
-        }, {
-            headers: {
-                'Authorization': `Bearer ${access_token}`
-            }
         })
         .then( async ({ data }) => {
             let formatedData = await filterPaginationData({

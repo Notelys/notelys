@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../common/api";
 import { createContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import AnimationWrapper from "../common/page-animation";
@@ -35,14 +35,14 @@ const BlogPage = () => {
     let { title, content, banner, author: { personal_info: { fullname, username: author_username, profile_img } }, publishedAt } = blog;
 
     const fetchBlog = () => {
-        axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/get-blog", { blog_id })
+        api.post("/get-blog", { blog_id })
         .then(async ({ data: { blog } }) => {
             
             blog.comments = await fetchComments({ blog_id: blog._id, setParentCommentCountFun: setTotalParentCommentsLoaded })
 
             setBlog(blog);
 
-            axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/search-blogs", { tag: blog.tags[0], limit: 6, eliminate_blog: blog_id })
+            api.post("/search-blogs", { tag: blog.tags[0], limit: 6, eliminate_blog: blog_id })
             .then(({ data }) => {
                 setSimilarBlogs(data.blogs);
 

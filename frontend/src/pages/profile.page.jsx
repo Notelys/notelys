@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../common/api";
 import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import AnimationWrapper from "../common/page-animation";
@@ -45,7 +45,7 @@ const ProfilePage = () => {
         let { userAuth: { username } } = useContext(UserContext);
 
     const fetchUserProfile = () => {
-        axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/get-profile", {username: profileId})
+        api.post("/get-profile", {username: profileId})
         .then(({ data: user }) => {
             if(user != null){
                 setProfile(user);
@@ -65,7 +65,7 @@ const ProfilePage = () => {
 
         user_id = user_id == undefined ? blogs.user_id : user_id;
 
-        axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/search-blogs", {
+        api.post("/search-blogs", {
             author: user_id,
             page
         })

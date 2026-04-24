@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../common/api";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../App";
 import { filterPaginationData } from "../common/filter-pagination-data";
@@ -19,11 +19,7 @@ const Notifications = () => {
 
     const fetchNotifications = ({ page, deletedDocCount=0 }) => {
         
-        axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/notifications", { page, filter, deletedDocCount }, {
-            headers: {
-                'Authorization': `Bearer ${access_token}`
-            }
-        })
+        api.post("/notifications", { page, filter, deletedDocCount })
         .then(async ({ data: { notifications: data } }) => {
 
             if(new_notification_avilable){

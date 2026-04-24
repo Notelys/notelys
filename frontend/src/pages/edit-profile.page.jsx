@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { UserContext } from "../App";
-import axios from "axios";
+import api from "../common/api";
 import { profileDataStructure } from "./profile.page";
 import AnimationWrapper from "../common/page-animation";
 import Loader from "../components/loader.component";
@@ -28,7 +28,7 @@ const EditProfile = () => {
     useEffect(() => {
 
         if(access_token){
-            axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/get-profile", { username: userAuth.username })
+            api.post("/get-profile", { username: userAuth.username })
             .then(({data}) => {
                 setProfile(data);
                 setLoading(false);
@@ -67,11 +67,7 @@ const EditProfile = () => {
             .then(url => {
                 
                 if(url){
-                    axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/update-profile-img", { url }, {
-                        headers: {
-                            'Authorization': `Bearer ${access_token}`
-                        }
-                    })
+                    api.post("/update-profile-img", { url })
                     .then(({ data }) => {
                         let newUserAuth = { ...userAuth, profile_img: data.profile_img }
 
@@ -121,13 +117,9 @@ const EditProfile = () => {
         let loadingToast = toast.loading("Updating.....");
         e.target.setAttribute("disabled", true);
 
-        axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/update-profile", {
+        api.post("/update-profile", {
             username, bio,
             social_links: { youtube, facebook, twitter, github, instagram, website }
-        }, {
-            headers: {
-                'Authorization': `Bearer ${access_token}`
-            }
         })
         .then(({ data }) => {
 

@@ -2,7 +2,7 @@ import { useContext, useRef } from "react";
 import AnimationWrapper from "../common/page-animation";
 import InputBox from "../components/input.component";
 import toast, { Toaster } from "react-hot-toast";
-import axios from "axios";
+import api from "../common/api";
 import { UserContext } from "../App";
 
 const ChangePassword = () => {
@@ -37,11 +37,7 @@ const ChangePassword = () => {
 
         let loadingToast = toast.loading("Updating...");
 
-        axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/change-password", formData, {
-            headers: {
-                'Authorization': `Bearer ${access_token}`
-            }
-        })
+        api.post("/change-password", formData)
         .then(() => {
             toast.dismiss(loadingToast);
             e.target.removeAttribute("disabled");

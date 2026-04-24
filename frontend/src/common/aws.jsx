@@ -1,23 +1,15 @@
-import axios from "axios";
-import { lookInSession } from "./session";
+import api from "./api";
 
 export const uploadImage = async (img) => {
 
     let imgURL = null;
 
-    // Get access token from session for authenticated uploads
-    const userSession = lookInSession("user");
-    const access_token = userSession ? JSON.parse(userSession).access_token : null;
-
-    await axios.get(import.meta.env.VITE_SERVER_DOMAIN + "/get-upload-url", {
-        headers: {
-            'Authorization': `Bearer ${access_token}`
-        }
-    })
+    await api.get("/get-upload-url")
     .then( async ({ data: { uploadURL } }) => {
-        await axios({
+        await api({
             method: 'PUT',
             url: uploadURL,
+            baseURL: '', // Override baseURL for direct S3 upload
             headers: { 'content-Type': 'multipart/form-data' },
             data: img
         })
