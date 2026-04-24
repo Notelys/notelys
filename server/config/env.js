@@ -20,7 +20,7 @@ if (missingVars.length > 0) {
 
 // Optional env vars with defaults
 const optionalEnvVars = {
-    PORT: process.env.PORT || '3000',
+    PORT: process.env.PORT || '8080',
     FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:5173',
 };
 

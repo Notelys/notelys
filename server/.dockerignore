@@ -1,0 +1,26 @@
+# Dependencies (rebuilt inside Docker)
+node_modules/
+
+# Version control
+.git/
+.gitignore
+
+# Environment files (injected at runtime via Cloud Run secrets)
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Dev tooling
+*.md
+requests.rest
+
+# Firebase credentials (must be handled via Secret Manager in prod)
+*.json
+
+# OS artifacts
+.DS_Store
+Thumbs.db
