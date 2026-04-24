@@ -22,10 +22,7 @@ import userRoutes from './routes/user.routes.js';
 import uploadRoutes from './routes/upload.routes.js';
 
 const server = express();
-let PORT = process.env.PORT || 8080;
-
-// Connect to database
-connectDB();
+const PORT = process.env.PORT || 8080;
 
 // Global middleware
 server.use(express.json());
@@ -34,6 +31,11 @@ server.use(cors({
     methods: ['GET', 'POST'],
     credentials: true
 }));
+
+// Health check (Cloud Run uses this to verify the container is alive)
+server.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok' });
+});
 
 // Mount routes
 server.use(authRoutes);
@@ -46,6 +48,18 @@ server.use(uploadRoutes);
 // Global error handler (must be after routes)
 server.use(errorHandler);
 
-server.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on http://0.0.0.0:${PORT}`);
-});
+// Start: connect to DB first, then listen
+const start = async () => {
+    try {
+        await connectDB();
+
+        server.listen(PORT, '0.0.0.0', () => {
+            console.log(`🚀 Server running on http://0.0.0.0:${PORT}`);
+        });
+    } catch (err) {
+        console.error('❌ Failed to start server:', err.message);
+        process.exit(1);
+    }
+};
+
+start();
