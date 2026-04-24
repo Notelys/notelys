@@ -91,7 +91,7 @@ const BlogInteraction = () => {
 
                     {
                         username == author_username ?
-                        <Link to={`/editor/${blog_id}`} className="underline hover:text-purple">Edit</Link> : ""
+                        <Link to={`/editor/${blog_id}`} className="underline hover:text-brand">Edit</Link> : ""
                     }
 
                     <Link to={`https://x.com/intent/tweet?text=Read${title}&url=${location.href}`} aria-label="Share on X">

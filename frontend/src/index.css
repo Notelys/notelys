@@ -8,7 +8,12 @@
 
 @layer components {
     * {
-        @apply m-0 p-0 box-border text-base outline-purple/30 duration-100;
+        @apply m-0 p-0 box-border text-base duration-100;
+        outline: none;
+    }
+
+    *:focus-visible {
+        @apply ring-1 ring-brand/50 border-brand;
     }
 
     html{
@@ -32,7 +37,7 @@
     }
 
     ::selection {
-        @apply bg-purple/30;
+        @apply bg-brand/30;
     }
 
     img{
@@ -60,7 +65,7 @@
     }
 
     .input-box {
-        @apply w-[100%] rounded-md p-4 bg-grey pl-12 border border-grey focus:bg-transparent placeholder:text-black;
+        @apply w-[100%] rounded-md p-4 bg-grey pl-12 border border-grey focus:bg-transparent placeholder:text-black focus:border-brand focus:ring-1 focus:ring-brand/30;
     }
 
     input:disabled, input:disabled ~ .input-icon{
@@ -104,7 +109,7 @@
     }
 
     #textEditor a, .blog-page-content a{
-        @apply text-purple underline hover:opacity-50;
+        @apply text-brand underline hover:opacity-50;
     }
 
     .tag{
