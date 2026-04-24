@@ -32,7 +32,7 @@ server.use(cors({
     credentials: true
 }));
 
-// Health check (Cloud Run uses this to verify the container is alive)
+// Health check — Cloud Run uses this to verify container is alive
 server.get('/health', (req, res) => {
     res.status(200).json({ status: 'ok' });
 });
@@ -48,18 +48,12 @@ server.use(uploadRoutes);
 // Global error handler (must be after routes)
 server.use(errorHandler);
 
-// Start: connect to DB first, then listen
-const start = async () => {
-    try {
-        await connectDB();
+// 1. Start listening IMMEDIATELY so Cloud Run sees port 8080 open
+server.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Server listening on http://0.0.0.0:${PORT}`);
 
-        server.listen(PORT, '0.0.0.0', () => {
-            console.log(`🚀 Server running on http://0.0.0.0:${PORT}`);
-        });
-    } catch (err) {
-        console.error('❌ Failed to start server:', err.message);
-        process.exit(1);
-    }
-};
-
-start();
+    // 2. Connect to DB AFTER server is already accepting traffic
+    connectDB().catch(err => {
+        console.error('❌ DB connection error (non-fatal):', err.message);
+    });
+});
