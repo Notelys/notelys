@@ -10,7 +10,6 @@ export default defineConfig({
         manualChunks: {
           // Split large vendor libraries into separate cached chunks
           'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-firebase': ['firebase/app', 'firebase/auth'],
           'vendor-editor': [
             '@editorjs/editorjs',
             '@editorjs/header',
