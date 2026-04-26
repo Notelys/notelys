@@ -1,7 +1,10 @@
 // Validate required environment variables at startup
 const requiredEnvVars = [
     'DB_LOCATION',
-    'SECRET_ACCESS_KEY',
+    'JWT_ACCESS_SECRET',
+    'JWT_REFRESH_SECRET',
+    'EMAIL_USER',
+    'EMAIL_PASS',
     'AWS_ACCESS_KEY',
     'AWS_SECRET_ACCESS_KEY',
     'AWS_REGION',
@@ -22,6 +25,9 @@ if (missingVars.length > 0) {
 const optionalEnvVars = {
     PORT: process.env.PORT || '8080',
     FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:5173',
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || '',
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || '',
+    GOOGLE_CALLBACK_URL: process.env.GOOGLE_CALLBACK_URL || '/api/auth/google/callback',
 };
 
 if (!process.env.FRONTEND_URL) {

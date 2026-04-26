@@ -55,6 +55,7 @@ export const signin = (req, res) => {
     let { email, password } = req.body;
 
     User.findOne({ "personal_info.email": email })
+    .select('+personal_info.password')
     .then((user) => {
         if(!user){
             return res.status(403).json({ "error": "Email not found" })
@@ -146,6 +147,7 @@ export const changePassword = (req, res) => {
     }
 
     User.findOne({ _id: req.user })
+    .select('+personal_info.password')
     .then((user) => {
 
         if(user.google_auth){

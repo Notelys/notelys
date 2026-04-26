@@ -18,7 +18,14 @@ const userSchema = mongoose.Schema({
             lowercase: true,
             unique: true
         },
-        password: String,
+        password: {
+            type: String,
+            select: false,
+        },
+        isEmailVerified: {
+            type: Boolean,
+            default: false,
+        },
         username: {
             type: String,
             minlength: [3, 'Username must be 3 letters long'],
@@ -75,6 +82,15 @@ const userSchema = mongoose.Schema({
     google_auth: {
         type: Boolean,
         default: false
+    },
+    provider: {
+        type: String,
+        enum: ['local', 'google'],
+        default: 'local',
+    },
+    refreshToken: {
+        type: String,
+        select: false, // never exposed in normal queries
     },
     blogs: {
         type: [ Schema.Types.ObjectId ],
