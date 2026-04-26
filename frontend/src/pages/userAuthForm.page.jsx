@@ -3,7 +3,7 @@ import usePageTitle from "../common/usePageTitle";
 import AnimationWrapper from "../common/page-animation";
 import InputBox from "../components/input.component";
 import googleIcon from "../imgs/google.png";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
 import api from "../common/api";
 import { storeInSession } from "../common/session";
@@ -13,21 +13,9 @@ import { UserContext } from "../App";
 const UserAuthForm = ( {type} ) => {
 
     const { userAuth: { access_token }, setUserAuth } = useContext(UserContext)
+    const navigate = useNavigate();
 
     usePageTitle(type === 'sign-in' ? 'Sign In' : 'Sign Up');
-
-    const userAuthThroughServer = (serverRoute, formData) => {
-        
-        api.post(serverRoute, formData)
-        .then(({ data }) => {
-            storeInSession("user", JSON.stringify(data))
-            
-            setUserAuth(data)
-        })
-        .catch(({ response }) => {
-            toast.error(response.data.error)
-        })
-    }
 
     const handleSubmit = (e) => {
 
@@ -56,7 +44,6 @@ const UserAuthForm = ( {type} ) => {
         }
         if(!email.length){
             return toast.error("Enter Email");
-            
         }
         if(!emailRegex.test(email)){
             return toast.error("Email is invalid" );
@@ -65,7 +52,35 @@ const UserAuthForm = ( {type} ) => {
             return toast.error("Password should be 6 to 20 characters long with a numeric, 1 lowercase and 1 uppercase letters");
         }
 
-        userAuthThroughServer(serverRoute, formData);
+        api.post(serverRoute, formData)
+        .then(({ data }) => {
+
+            if (type === "sign-up") {
+                // Signup returns { message, email } — redirect to OTP verification
+                toast.success(data.message || "OTP sent to your email!");
+                navigate("/verify-otp", { state: { email: data.email } });
+            } else {
+                // Signin — check if email needs verification
+                if (data.needsVerification) {
+                    toast.error("Please verify your email first");
+                    navigate("/verify-otp", { state: { email: data.email } });
+                } else {
+                    // Successful sign-in — store tokens and redirect
+                    storeInSession("user", JSON.stringify(data));
+                    setUserAuth(data);
+                }
+            }
+
+        })
+        .catch(({ response }) => {
+            if (response?.data?.needsVerification) {
+                // Email not verified — redirect to OTP page
+                toast.error("Please verify your email first");
+                navigate("/verify-otp", { state: { email: response.data.email } });
+            } else {
+                toast.error(response?.data?.error || "Something went wrong");
+            }
+        })
 
     }
 
@@ -136,12 +151,19 @@ const UserAuthForm = ( {type} ) => {
                     {
                     
                     type == "sign-in" ?
-                    <p className="mt-6 text-dark-grey text-xl text-center">
-                        Don't have an account ?
-                        <Link to="/signup" className="underline text-black text-xl ml-1">
-                            Join us today
-                        </Link>
-                    </p>
+                    <>
+                        <p className="mt-6 text-dark-grey text-xl text-center">
+                            Don't have an account ?
+                            <Link to="/signup" className="underline text-black text-xl ml-1">
+                                Join us today
+                            </Link>
+                        </p>
+                        <p className="mt-3 text-dark-grey text-base text-center">
+                            <Link to="/forgot-password" className="underline text-black">
+                                Forgot password?
+                            </Link>
+                        </p>
+                    </>
                     :
                     <p className="mt-6 text-dark-grey text-xl text-center">
                         Already a member ?
