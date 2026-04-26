@@ -1,11 +1,12 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import "dotenv/config";
 
 // Config
 import './config/env.js';
 import connectDB from './config/db.js';
-import './config/firebase.js';
+import { initializePassport } from './config/passport.js';
 
 // Middleware
 import errorHandler from './middleware/errorHandler.js';
@@ -22,7 +23,9 @@ const server = express();
 const PORT = process.env.PORT || 8080;
 
 // Global middleware
+server.use(helmet());
 server.use(express.json());
+
 const allowedOrigins = [
     'http://localhost:5173',
     process.env.FRONTEND_URL,
@@ -33,6 +36,9 @@ server.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }));
+
+// Initialize Passport (Google OAuth)
+initializePassport(server);
 
 // Health check — Cloud Run uses this to verify container is alive
 server.get('/health', (req, res) => {

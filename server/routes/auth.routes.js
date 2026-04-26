@@ -1,8 +1,10 @@
 import { Router } from 'express';
+import passport from 'passport';
 import {
     signup,
     signin,
-    googleAuth,
+    googleAuthRedirect,
+    googleAuthCallback,
     verifyEmail,
     resendOtp,
     forgotPassword,
@@ -19,12 +21,18 @@ const router = Router();
 // ── Public routes (no JWT required) ──────────────
 router.post("/signup",          authLimiter, signup);
 router.post("/signin",          authLimiter, signin);
-router.post("/google-auth",     authLimiter, googleAuth);
 router.post("/verify-email",    authLimiter, verifyEmail);
 router.post("/resend-otp",      authLimiter, resendOtp);
 router.post("/forgot-password", authLimiter, forgotPassword);
 router.post("/reset-password",  authLimiter, resetPassword);
 router.post("/refresh-token",   refreshToken);
+
+// ── Google OAuth 2.0 (server-side redirect flow) ──
+router.get("/api/auth/google",          googleAuthRedirect);
+router.get("/api/auth/google/callback", 
+    passport.authenticate('google', { session: false, failureRedirect: '/signin' }),
+    googleAuthCallback
+);
 
 // ── Protected routes (JWT required) ──────────────
 router.post("/change-password", verifyJWT, changePassword);

@@ -8,7 +8,6 @@ import { Toaster, toast } from "react-hot-toast";
 import api from "../common/api";
 import { storeInSession } from "../common/session";
 import { UserContext } from "../App";
-import { authWithGoogle } from "../common/firebase";
 
 
 const UserAuthForm = ( {type} ) => {
@@ -17,8 +16,6 @@ const UserAuthForm = ( {type} ) => {
 
     usePageTitle(type === 'sign-in' ? 'Sign In' : 'Sign Up');
 
-    console.log(access_token);
-    
     const userAuthThroughServer = (serverRoute, formData) => {
         
         api.post(serverRoute, formData)
@@ -51,7 +48,7 @@ const UserAuthForm = ( {type} ) => {
 
         let { fullname, email, password } = formData;
 
-        // Form Validation (Copied the validations from server.js file)
+        // Form Validation
         if(fullname){
             if(fullname.length < 3){
                 return toast.error("Fullname must be at least 3 letters long")
@@ -73,25 +70,9 @@ const UserAuthForm = ( {type} ) => {
     }
 
     const handleGoogleAuth = (e) => {
-
         e.preventDefault();
-
-        authWithGoogle()
-        .then(user => {
-
-            let serverRoute = "/google-auth";
-
-            let formData = {
-                access_token: user.accessToken
-            }
-
-            userAuthThroughServer(serverRoute, formData)
-        })
-        .catch(err => {
-            toast.error("trouble login through google");
-            return console.log(err)
-        })
-
+        // Redirect to server-side Google OAuth (Passport.js handles the flow)
+        window.location.href = `${import.meta.env.VITE_SERVER_DOMAIN}api/auth/google`;
     }
 
     return(

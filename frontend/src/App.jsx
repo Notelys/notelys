@@ -17,6 +17,7 @@ const ChangePassword = lazy(() => import("./pages/change-password.page"));
 const EditProfile = lazy(() => import("./pages/edit-profile.page"));
 const Notifications = lazy(() => import("./pages/notifications.page"));
 const ManageBlogs = lazy(() => import("./pages/manage-blogs.page"));
+const AuthCallback = lazy(() => import("./pages/auth-callback.page"));
 
 export const UserContext = createContext({});
 
@@ -69,6 +70,7 @@ const App = () => {
                             <Route path="search/:query" element={<SearchPage />} />
                             <Route path="user/:id" element={<ProfilePage />} />
                             <Route path="blog/:blog_id" element={<BlogPage />} />
+                            <Route path="auth/callback" element={<AuthCallback />} />
                             <Route path="*" element={<PageNotFound />} />
                         </Route>
                         

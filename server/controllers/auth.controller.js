@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import User from '../Schema/User.js';
 import LoginAttempt from '../Schema/LoginAttempt.js';
-import { getAuth } from '../config/firebase.js';
+import passport from 'passport';
 import { emailRegex, passwordRegex } from '../utils/regex.js';
 import { formatDatatoSend, generateUsername } from '../utils/helpers.js';
 import { generateTokenPair, generateAccessToken, verifyRefreshToken } from '../services/token.service.js';
@@ -272,42 +272,32 @@ export const signin = async (req, res) => {
 };
 
 // ─────────────────────────────────────────────
-// Google Auth — Firebase popup flow (kept for now)
+// Google Auth — Passport OAuth 2.0 redirect flow
 // ─────────────────────────────────────────────
-export const googleAuth = async (req, res) => {
+
+/**
+ * Step 1: Initiates Google OAuth — redirects user to Google consent screen.
+ * GET /api/auth/google
+ */
+export const googleAuthRedirect = passport.authenticate('google', {
+    scope: ['email', 'profile'],
+    session: false,
+});
+
+/**
+ * Step 2: Google callback — Passport validates the auth code,
+ * runs the GoogleStrategy, and attaches the user to req.user.
+ * Then we generate tokens and redirect to the frontend callback page.
+ * GET /api/auth/google/callback
+ */
+export const googleAuthCallback = async (req, res) => {
     try {
-        let { access_token } = req.body;
+        const user = req.user;
 
-        const decodedUser = await getAuth().verifyIdToken(access_token);
-        let { email, name, picture } = decodedUser;
-
-        picture = picture.replace("s96-c", "s384-c");
-
-        let user = await User.findOne({ "personal_info.email": email })
-            .select("personal_info.fullname personal_info.username personal_info.profile_img google_auth");
-
-        if (user) {
-            // Existing user — check it's a Google account
-            if (!user.google_auth) {
-                return res.status(403).json({ error: ERRORS.GOOGLE_ACCOUNT_EXISTS });
-            }
-        } else {
-            // New user — create with Google provider
-            let username = await generateUsername(email);
-
-            user = new User({
-                personal_info: {
-                    fullname: name,
-                    email,
-                    username,
-                    profile_img: picture,
-                    isEmailVerified: true,
-                },
-                google_auth: true,
-                provider: 'google',
-            });
-
-            await user.save();
+        if (!user) {
+            return res.redirect(
+                `${process.env.FRONTEND_URL}/auth/callback?error=${encodeURIComponent(ERRORS.GOOGLE_AUTH_FAILED)}`
+            );
         }
 
         // Generate tokens and store hashed refresh token
@@ -315,17 +305,22 @@ export const googleAuth = async (req, res) => {
         const hashedRefreshToken = await bcrypt.hash(tokens.refresh_token, AUTH.SALT_ROUNDS);
         await User.updateOne({ _id: user._id }, { refreshToken: hashedRefreshToken });
 
-        return res.status(200).json({
+        // Redirect to frontend with tokens in URL params
+        const params = new URLSearchParams({
             access_token: tokens.access_token,
             refresh_token: tokens.refresh_token,
-            profile_img: user.personal_info.profile_img,
+            profile_img: user.personal_info.profile_img || '',
             username: user.personal_info.username,
             fullname: user.personal_info.fullname,
         });
 
+        return res.redirect(`${process.env.FRONTEND_URL}/auth/callback?${params.toString()}`);
+
     } catch (err) {
-        console.error('[Google Auth Error]', err.message);
-        return res.status(500).json({ error: ERRORS.GOOGLE_AUTH_FAILED });
+        console.error('[Google Auth Callback Error]', err.message);
+        return res.redirect(
+            `${process.env.FRONTEND_URL}/auth/callback?error=${encodeURIComponent(ERRORS.GOOGLE_AUTH_FAILED)}`
+        );
     }
 };
 
