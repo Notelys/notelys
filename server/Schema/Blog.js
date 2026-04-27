@@ -68,4 +68,8 @@ const blogSchema = mongoose.Schema({
 
 })
 
+// Indexes for performance
+blogSchema.index({ tags: 1 });
+blogSchema.index({ draft: 1, publishedAt: -1 });
+
 export default mongoose.model("blogs", blogSchema);

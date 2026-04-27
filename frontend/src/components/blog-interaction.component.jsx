@@ -62,7 +62,7 @@ const BlogInteraction = () => {
 
     return (
         <>
-            <Toaster />
+
             <hr className="border-grey my-2" />
 
             <div className="flex gap-6 justify-between">

@@ -153,7 +153,7 @@ const EditProfile = () => {
             {
                 loading ? <Loader /> : 
                 <form ref={editProfileForm}>
-                    <Toaster />
+
 
                     <h1 className="max-md:hidden">Edit Profile</h1>
 

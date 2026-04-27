@@ -114,7 +114,7 @@ const VerifyOtp = () => {
     return (
         <AnimationWrapper keyValue="verify-otp">
             <section className="h-cover flex items-center justify-center">
-                <Toaster />
+
                 <form className="w-[80%] max-w-[400px] text-center" onSubmit={handleVerify}>
 
                     <h1 className="text-4xl font-gelasio text-center mb-4">

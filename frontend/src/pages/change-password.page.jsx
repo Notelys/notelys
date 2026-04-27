@@ -58,7 +58,7 @@ const ChangePassword = () => {
 
     return(
         <AnimationWrapper>
-            <Toaster />
+
             <form ref={changePasswordForm}>
 
                 <h1 className="max-md:hidden">Change Password</h1>

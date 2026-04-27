@@ -89,7 +89,7 @@ const ManageBlogs = () => {
         <>
             <h1 className="max-md:hidden">Manage Blogs</h1>
 
-            <Toaster />
+
 
             <div className="relative max-md:mt-5 md:mt-8 mb-10">
                 <input 

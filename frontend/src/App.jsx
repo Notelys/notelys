@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/navbar.component";
 import { createContext, useEffect, useState, lazy, Suspense } from "react";
 import { lookInSession } from "./common/session";
+import { Toaster } from 'react-hot-toast';
 import Loader from "./components/loader.component";
 
 // Lazy load all pages — only downloaded when the user navigates to them
@@ -55,6 +56,7 @@ const App = () => {
     return (
         <ThemeContext.Provider value={{ theme, setTheme }}>
             <UserContext.Provider value={{userAuth, setUserAuth}}>
+                <Toaster />
                 <Suspense fallback={<Loader />}>
                     <Routes>
                         <Route path="/editor" element={<Editor/>} />

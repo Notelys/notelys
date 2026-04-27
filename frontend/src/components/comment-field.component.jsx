@@ -75,7 +75,7 @@ const CommentField = ({ action, index = undefined, replyingTo = undefined, setRe
 
     return(
         <>
-            <Toaster />
+
             <textarea 
                 value={comment} 
                 onChange={(e) => setComment(e.target.value)}

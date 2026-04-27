@@ -35,7 +35,7 @@ const NotificationCommentField = ({ _id, blog_author, index=undefined, replyingT
 
     return(
         <>
-            <Toaster />
+
             <textarea 
                 value={comment} 
                 onChange={(e) => setComment(e.target.value)}

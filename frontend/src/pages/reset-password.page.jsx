@@ -98,7 +98,7 @@ const ResetPassword = () => {
     return (
         <AnimationWrapper keyValue="reset-password">
             <section className="h-cover flex items-center justify-center">
-                <Toaster />
+
                 {
                     !success ? (
                         <form id="resetForm" className="w-[80%] max-w-[400px]" onSubmit={handleReset}>

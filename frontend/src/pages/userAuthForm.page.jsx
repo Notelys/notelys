@@ -96,7 +96,7 @@ const UserAuthForm = ( {type} ) => {
         :
         <AnimationWrapper keyValue={type}>
             <section className="h-cover flex items-center justify-center">
-                <Toaster />
+
                 <form id="formElement" className="w-[80%] max-w-[400px]">
                     <h1 className="text-4xl font-gelasio capitalize text-center mb-24">
                         {type == "sign-in" ? "Welcome back" : "Join us today"}
@@ -129,7 +129,7 @@ const UserAuthForm = ( {type} ) => {
 
                     <button
                         className="btn-dark center mt-14"
-                        type="sumbmit"
+                        type="submit"
                         onClick={handleSubmit}
                     >
                         {type.replace("-", " ")}

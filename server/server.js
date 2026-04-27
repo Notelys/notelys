@@ -28,7 +28,7 @@ server.use(helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' }, // Allow S3 image loading
     crossOriginEmbedderPolicy: false, // Allow embedding cross-origin resources (S3 images)
 }));
-server.use(express.json());
+server.use(express.json({ limit: '10mb' }));
 
 const allowedOrigins = [
     'http://localhost:5173',

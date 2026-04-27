@@ -174,7 +174,7 @@ const BlogEditor = () => {
                     </button>
                 </div>
             </nav>
-            <Toaster />
+
             <AnimationWrapper>
                 <section>
                     <div className="mx-auto max-w-[900px] w-full">

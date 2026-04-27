@@ -1,10 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { UserContext } from "../App";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useParams, useNavigate } from "react-router-dom";
 import BlogEditor from "../components/blog-editor.component";
 import PublishForm from "../components/publish-form.component";
 import Loader from "../components/loader.component";
 import api from "../common/api";
+import { toast } from "react-hot-toast";
 
 const blogStructure = {
     title: "",
@@ -20,13 +21,14 @@ export const EditorContext = createContext({ });
 const Editor = () => {
 
     let { blog_id } = useParams();
+    const navigate = useNavigate();
 
     const [ blog, setBlog ] = useState(blogStructure);
     const [ editorState, setEditorState ] = useState("editor");
     const [ textEditor, setTextEditor ] = useState({ isReady: false });
     const [ loading, setLoading ] = useState(true);
     
-    let { userAuth: {access_token} } = useContext(UserContext);
+    let { userAuth: {access_token, username} } = useContext(UserContext);
 
     useEffect(() => {
 
@@ -36,6 +38,11 @@ const Editor = () => {
 
         api.post("/get-blog", {blog_id, draft: true, mode: 'edit'})
         .then(( { data: {blog} } ) => {
+            if (blog.author.personal_info.username !== username) {
+                toast.error("You don't have permission to edit this blog");
+                navigate("/");
+                return;
+            }
             setBlog(blog);
             setLoading(false);
         })

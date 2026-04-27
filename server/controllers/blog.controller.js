@@ -183,8 +183,9 @@ export const createBlog = (req, res) => {
 
     if(id){
 
-        Blog.findOneAndUpdate({ blog_id }, { title, des, banner, content, tags, draft: draft ? draft : false })
+        Blog.findOneAndUpdate({ blog_id, author: authorId }, { title, des, banner, content, tags, draft: draft ? draft : false })
         .then(blog => {
+            if (!blog) return res.status(403).json({ error: "You don't have permission to edit this blog" });
             return res.status(200).json({ id: blog_id });
         })
         .catch(err => {

@@ -51,7 +51,7 @@ const ForgotPassword = () => {
     return (
         <AnimationWrapper keyValue="forgot-password">
             <section className="h-cover flex items-center justify-center">
-                <Toaster />
+
                 {
                     !sent ? (
                         <form id="formElement" className="w-[80%] max-w-[400px]">
