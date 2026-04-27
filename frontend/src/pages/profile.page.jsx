@@ -58,7 +58,6 @@ const ProfilePage = () => {
             setLoading(false);
         })
         .catch(err => {
-            console.log(err);
             setLoading(false);
         })
 

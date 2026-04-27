@@ -5,6 +5,8 @@ import Comment from '../Schema/Comment.js';
 import { nanoid } from 'nanoid';
 import { escapeRegex } from '../utils/helpers.js';
 import { deleteMultipleFromS3 } from '../config/s3.js';
+import sanitizeHtml from 'sanitize-html';
+import jwt from 'jsonwebtoken';
 
 // Latest Blogs
 export const latestBlogs = (req, res) => {
@@ -36,7 +38,7 @@ export const allLatestBlogsCount = (req, res) => {
         return res.status(200).json({ totalDocs: count })
     })
     .catch(err => {
-        console.log(err.message);
+        console.error('[Blog] allLatestBlogsCount failed:', err.message);
         return res.status(500).json({ error: err.message })
     })
 
@@ -72,6 +74,8 @@ export const searchBlogs = (req, res) => {
         findQuery = { draft: false, title: new RegExp(escapeRegex(query), 'i') }
     }else if(author){
         findQuery = { author, draft: false }
+    }else{
+        return res.status(400).json({ error: "Search query, tag, or author is required" });
     }
 
     let maxLimit = limit ? limit : 2;
@@ -104,6 +108,8 @@ export const searchBlogsCount = (req, res) => {
         findQuery = { draft: false, title: new RegExp(escapeRegex(query), 'i') }
     }else if(author){
         findQuery = { author, draft: false }
+    }else{
+        return res.status(400).json({ error: "Search query, tag, or author is required" });
     }
 
     Blog.countDocuments(findQuery)
@@ -111,13 +117,13 @@ export const searchBlogsCount = (req, res) => {
         return res.status(200).json({ totalDocs: count })
     })
     .catch(err => {
-        console.log(err.message);
+        console.error('[Blog] searchBlogsCount failed:', err.message);
         return res.status(500).json({ error: err.message })
     })
 
 };
 
-import sanitizeHtml from 'sanitize-html';
+
 
 const sanitizeOptions = {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'a', 'b', 'i', 'u', 'strong', 'em', 'ol', 'ul', 'li', 'code', 'pre', 'br', 'span', 'div', 'mark', 'table', 'tr', 'td', 'th', 'tbody', 'thead']),
@@ -226,7 +232,7 @@ export const createBlog = (req, res) => {
 
 };
 
-import jwt from 'jsonwebtoken';
+
 
 // Get blog
 export const getBlog = (req, res) => {
@@ -282,29 +288,45 @@ export const likeBlog = (req, res) => {
 
     let { _id, isLikedByUser } = req.body;
 
+    if (!_id) {
+        return res.status(400).json({ error: "Blog ID is required" });
+    }
+
     let incrementVal = !isLikedByUser ? 1 : -1;
 
     Blog.findOneAndUpdate({ _id }, { $inc: { "activity.total_likes": incrementVal } })
     .then(blog => {
 
-        if(!isLikedByUser){
-            let like = new Notification({
-                type: "like",
-                blog: _id,
-                notification_for: blog.author,
-                user: user_id
-            })
+        if (!blog) {
+            return res.status(404).json({ error: "Blog not found" });
+        }
 
-            like.save().then(notification => {
-                return res.status(200).json({ liked_by_user: true })
-            }).catch(err => {
-                return res.status(500).json({ error: err.message });
+        if(!isLikedByUser){
+            // Idempotent: only create notification if one doesn't already exist
+            Notification.findOne({ user: user_id, blog: _id, type: "like" })
+            .then(existing => {
+                if (existing) {
+                    return res.status(200).json({ liked_by_user: true });
+                }
+                new Notification({
+                    type: "like",
+                    blog: _id,
+                    notification_for: blog.author,
+                    user: user_id
+                }).save().then(() => {
+                    return res.status(200).json({ liked_by_user: true });
+                }).catch(err => {
+                    return res.status(500).json({ error: err.message });
+                });
             })
+            .catch(err => {
+                return res.status(500).json({ error: err.message });
+            });
         }
         else{
 
             Notification.findOneAndDelete({ user: user_id, blog: _id, type: "like" })
-            .then(data => {
+            .then(() => {
                 return res.status(200).json({ liked_by_user: false });
             })
             .catch(err => {
@@ -376,7 +398,7 @@ export const userWrittenBlogsCount = (req, res) => {
         return res.status(200).json({ totalDocs: count });
     })
     .catch(err => {
-        console.log(err);
+        console.error('[Blog] userWrittenBlogsCount failed:', err.message);
         return res.status(500).json({ error: err.message });
     })
 
@@ -426,15 +448,12 @@ export const deleteBlog = (req, res) => {
         }
 
         Notification.deleteMany({ blog: blog._id })
-            .then(data => console.log("notification deleted"))
             .catch(err => console.error("notification delete error:", err.message));
 
         Comment.deleteMany({ blog_id: blog._id })
-            .then(data => console.log("comments deleted"))
             .catch(err => console.error("comments delete error:", err.message));
 
         User.findOneAndUpdate({ _id: user_id }, { $pull: { blogs: blog._id }, $inc: { "account_info.total_posts": -1 } })
-            .then(user => console.log("Blog deleted"))
             .catch(err => console.error("user update error:", err.message));
 
         return res.status(200).json({ status: "done" });

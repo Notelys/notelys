@@ -1,4 +1,4 @@
-import { Toaster, toast } from "react-hot-toast";
+import toast from "react-hot-toast";
 import AnimationWrapper from "../common/page-animation";
 import { useContext } from "react";
 import { EditorContext } from "../pages/editor.pages";

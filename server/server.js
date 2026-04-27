@@ -49,13 +49,13 @@ server.get('/health', (req, res) => {
     res.status(200).json({ status: 'ok' });
 });
 
-// Mount routes
-server.use(authRoutes);
-server.use(blogRoutes);
-server.use(commentRoutes);
-server.use(notificationRoutes);
-server.use(userRoutes);
-server.use(uploadRoutes);
+// Mount routes under /api prefix
+server.use('/api', authRoutes);
+server.use('/api', blogRoutes);
+server.use('/api', commentRoutes);
+server.use('/api', notificationRoutes);
+server.use('/api', userRoutes);
+server.use('/api', uploadRoutes);
 
 // Catch-all 404 for undefined API routes
 server.use((req, res) => {

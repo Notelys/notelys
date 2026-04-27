@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import usePageTitle from "../common/usePageTitle";
 import AnimationWrapper from "../common/page-animation";
-import { Toaster, toast } from "react-hot-toast";
+import toast from "react-hot-toast";
 import api from "../common/api";
 import { storeInSession } from "../common/session";
 import { UserContext } from "../App";

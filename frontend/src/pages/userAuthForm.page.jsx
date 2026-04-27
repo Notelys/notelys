@@ -4,7 +4,7 @@ import AnimationWrapper from "../common/page-animation";
 import InputBox from "../components/input.component";
 import googleIcon from "../imgs/google.png";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { Toaster, toast } from "react-hot-toast";
+import toast from "react-hot-toast";
 import api from "../common/api";
 import { storeInSession } from "../common/session";
 import { UserContext } from "../App";

@@ -13,7 +13,6 @@ export const filterPaginationData = async ({ create_new_arr = false, state, data
             obj = { results: data, page: 1, totalDocs }
         })
         .catch(err => {
-            console.log(err);
         })
 
     }

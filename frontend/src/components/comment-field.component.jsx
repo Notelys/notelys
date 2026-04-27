@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../App";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import api from "../common/api";
 import { BlogContext } from "../pages/blog.page";
 
@@ -68,7 +68,6 @@ const CommentField = ({ action, index = undefined, replyingTo = undefined, setRe
 
         })
         .catch(err => {
-            console.log(err);
         })
 
     }

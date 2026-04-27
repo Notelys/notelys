@@ -43,4 +43,8 @@ const notificationSchema = mongoose.Schema({
 }
 )
 
+// Indexes for performance
+notificationSchema.index({ notification_for: 1, createdAt: -1 });
+notificationSchema.index({ user: 1, blog: 1, type: 1 });
+
 export default mongoose.model("notification", notificationSchema)

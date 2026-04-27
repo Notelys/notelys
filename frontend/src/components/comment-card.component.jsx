@@ -90,7 +90,6 @@ const CommentCard = ({ index, leftVal, commentData }) => {
 
             })
             .catch(err => {
-                console.log(err);
             })
 
         }
@@ -107,7 +106,6 @@ const CommentCard = ({ index, leftVal, commentData }) => {
             removeCommentsCards(index + 1, true);
         })
         .catch(err => {
-            console.log(err);
         })
 
     }

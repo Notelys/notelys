@@ -4,7 +4,7 @@ import Icon from "../components/Icon";
 import { UserContext } from "../App";
 import { filterPaginationData } from "../common/filter-pagination-data";
 import api from "../common/api";
-import { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import InPageNavigation from "../components/inpage-navigation.component";
 import Loader from "../components/loader.component";
 import NoDataMessage from "../components/nodata.component";
@@ -40,7 +40,7 @@ const ManageBlogs = () => {
                 data_to_send: { draft, query }
             })
 
-            console.log(formatedData);
+
 
             if(draft){
                 setDrafts(formatedData);
@@ -49,7 +49,6 @@ const ManageBlogs = () => {
             }
         })
         .catch(err => {
-            console.log(err);
         })
     }
 

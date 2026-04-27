@@ -41,4 +41,7 @@ const commentSchema = mongoose.Schema({
     }
 })
 
+// Index for performance
+commentSchema.index({ blog_id: 1, isReply: 1, commentedAt: -1 });
+
 export default mongoose.model("comments", commentSchema)

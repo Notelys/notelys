@@ -54,7 +54,6 @@ const BlogPage = () => {
             setLoading(false);
         })
         .catch(err => {
-            console.log(err);
             setLoading(false);
         })
     }
@@ -112,7 +111,7 @@ const BlogPage = () => {
                         
                         <div className="my-12 font-gelasio blog-page-content">
                             {
-                                content[0].blocks.map((block, i) => {
+                                (content?.[0]?.blocks || content?.blocks || []).map((block, i) => {
                                     return <div key={i} className="my-4 md:my-8">
                                         <BlogContent block={block} />
                                     </div>

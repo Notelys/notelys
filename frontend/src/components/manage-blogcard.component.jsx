@@ -139,7 +139,6 @@ const deleteBlog = (blog, access_token, target) => {
 
     })
     .catch(err => {
-        console.log(err);
         target.removeAttribute("disabled");
     })
 

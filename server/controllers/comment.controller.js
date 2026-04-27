@@ -9,17 +9,14 @@ const deleteComments = (_id) => {
 
         if(comment.parent){
             Comment.findOneAndUpdate({ _id: comment.parent }, { $pull: { children: _id } })
-            .then(data => console.log("Comment delete from parent"))
-            .catch(err => console.log(err))
+            .catch(err => console.error('[Comment] Failed to remove from parent:', err.message))
         }
 
         Notification.findOneAndDelete({ comment: _id })
-        .then(notification => console.log("Comment notification deleted"))
-        .catch(err => console.error("Error deleting comment notification:", err.message));
+        .catch(err => console.error('[Comment] Failed to delete notification:', err.message));
         
         Notification.findOneAndUpdate({ reply: _id }, { $unset: { reply: 1 } })
-        .then(notification => console.log("reply notification deleted"))
-        .catch(err => console.error("Error deleting reply notification:", err.message));
+        .catch(err => console.error('[Comment] Failed to unset reply notification:', err.message));
 
         Blog.findOneAndUpdate({ _id: comment.blog_id }, { $pull: { comments: _id }, $inc: { 'activity.total_comments': -1 }, "activity.total_parent_comments": comment.parent ? 0 : -1 })
         .then(blog => {
@@ -29,10 +26,11 @@ const deleteComments = (_id) => {
                 })
             }
         })
+        .catch(err => console.error('[Comment] Failed to update blog activity:', err.message))
 
     })
     .catch(err => {
-        console.log(err.message);
+        console.error('[Comment] deleteComments failed:', err.message);
     })
 };
 
@@ -67,9 +65,7 @@ export const addComment = (req, res) => {
             $push: { "comments": commentFile._id }, 
             $inc: { "activity.total_comments": 1, "activity.total_parent_comments": replying_to ? 0 : 1  }
         })
-        .then(blog => {
-            console.log("New comment created");
-        })
+        .catch(err => console.error('[Comment] Failed to update blog:', err.message));
 
         let notificationObj = {
             type: replying_to ? "reply" : "comment",
@@ -90,14 +86,13 @@ export const addComment = (req, res) => {
 
             if(notification_id){
                 Notification.findOneAndUpdate({ _id: notification_id }, { reply: commentFile._id })
-                .then(notification => console.log('notification updated'));
+                .catch(err => console.error('[Comment] Failed to update notification reply:', err.message));
             }
 
         }
 
-        new Notification(notificationObj).save().then(notification => {
-            console.log("New notification created");
-        })
+        new Notification(notificationObj).save()
+        .catch(err => console.error('[Comment] Failed to create notification:', err.message));
 
         return res.status(200).json({
             comment,
@@ -107,6 +102,9 @@ export const addComment = (req, res) => {
             children
         })
 
+    })
+    .catch(err => {
+        return res.status(500).json({ error: err.message });
     })
 
 };
@@ -129,7 +127,7 @@ export const getBlogComments = (req, res) => {
         return res.status(200).json(comment);
     })
     .catch(err => {
-        console.log(err.message);
+        console.error('[Comment] getBlogComments failed:', err.message);
         return res.status(500).json({ error: err.message })
     })
 
@@ -176,7 +174,7 @@ export const deleteComment = (req, res) => {
     Comment.findOne({ _id })
     .then(comment => {
 
-        if(user_id == comment.commented_by || user_id == comment.blog_author){
+        if(user_id == comment.commented_by.toString() || user_id == comment.blog_author.toString()){
 
             deleteComments(_id)
 
@@ -186,6 +184,9 @@ export const deleteComment = (req, res) => {
             return res.status(403).json({ error: "You can not delete this comment" });
         }
 
+    })
+    .catch(err => {
+        return res.status(500).json({ error: err.message });
     })
 
 };

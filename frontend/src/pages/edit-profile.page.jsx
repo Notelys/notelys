@@ -5,7 +5,7 @@ import api from "../common/api";
 import { profileDataStructure } from "./profile.page";
 import AnimationWrapper from "../common/page-animation";
 import Loader from "../components/loader.component";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import InputBox from "../components/input.component";
 import { uploadImage } from "../common/aws";
 import { storeInSession } from "../common/session";
@@ -37,7 +37,6 @@ const EditProfile = () => {
                 setLoading(false);
             })
             .catch(err => {
-                console.log(err);
             })
         }
 
@@ -85,13 +84,12 @@ const EditProfile = () => {
                     .catch(({response}) => {
                         toast.dismiss(loadingToast);
                         e.target.removeAttribute("disabled");
-                        toast.error("response.data.error");
+                        toast.error(response?.data?.error || "Upload failed");
                     })
                 }
 
             })
             .catch(err => {
-                console.log(err);
             })
 
         }

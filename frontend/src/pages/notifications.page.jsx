@@ -41,7 +41,6 @@ const Notifications = () => {
 
         })
         .catch(err => {
-            console.log(err);
         })
 
     }

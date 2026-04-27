@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import usePageTitle from "../common/usePageTitle";
 import AnimationWrapper from "../common/page-animation";
 import InputBox from "../components/input.component";
-import { Toaster, toast } from "react-hot-toast";
+import toast from "react-hot-toast";
 import api from "../common/api";
 
 const ForgotPassword = () => {

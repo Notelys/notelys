@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { UserContext } from "../App";
 import api from "../common/api";
 
@@ -29,7 +29,6 @@ const NotificationCommentField = ({ _id, blog_author, index=undefined, replyingT
 
         })
         .catch(err => {
-            console.log(err);
         })
     }
 

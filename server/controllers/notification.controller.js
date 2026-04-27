@@ -14,7 +14,7 @@ export const newNotification = (req, res) => {
         }
     })
     .catch(err => {
-        console.log(err.message);
+        console.error('[Notification] newNotification failed:', err.message);
         return res.status(500).json({ error: err.message })
     })
 
@@ -58,13 +58,13 @@ export const getNotifications = (req, res) => {
         let notificationIds = notifications.map(n => n._id);
         if (notificationIds.length) {
             Notification.updateMany({ _id: { $in: notificationIds } }, { seen: true })
-            .then(() => console.log("notification seen"));
+            .catch(err => console.error('[Notification] Failed to mark as seen:', err.message));
         }
 
         return res.status(200).json({ notifications })
     })
     .catch(err => {
-        console.log(err.message);
+        console.error('[Notification] getNotifications failed:', err.message);
         return res.status(500).json({ error: err.message });
     })
 

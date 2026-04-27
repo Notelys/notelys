@@ -6,7 +6,7 @@ import lightBanner from "../imgs/blog banner light.png";
 import darkBanner from "../imgs/blog banner dark.png";
 import { uploadImage } from "../common/aws";
 import { useContext, useEffect } from "react";
-import { Toaster, toast } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { EditorContext } from "../pages/editor.pages";
 import EditorJS from "@editorjs/editorjs";
 import { tools } from "./tools.component";
@@ -25,7 +25,7 @@ const BlogEditor = () => {
     let navigate = useNavigate();
 
     useEffect(() => {
-        if(!textEditor.isReady){
+        if(!textEditor){
             setTextEditor(new EditorJS({
                 holder: "textEditor",
                 data: Array.isArray(content) ? content[0] : content,
@@ -90,7 +90,7 @@ const BlogEditor = () => {
             return toast.error("write blog tittle to publish it");
         }
 
-        if(textEditor.isReady){
+        if(textEditor?.isReady){
             textEditor.save().then(data => {
                 if(data.blocks.length){
                     setBlog({ ...blog, content: data });
@@ -100,7 +100,6 @@ const BlogEditor = () => {
                 }
             })
             .catch((err) => {
-                console.log(err);
             })
         }
 
@@ -120,7 +119,7 @@ const BlogEditor = () => {
         
         e.target.classList.add('disable');
         
-        if(textEditor.isReady){
+        if(textEditor?.isReady){
             textEditor.save().then( content => {
 
                 let blogObj = {

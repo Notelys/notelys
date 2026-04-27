@@ -28,7 +28,7 @@ export const getProfile = (req, res) => {
         return res.status(200).json(user)
     })
     .catch(err => {
-        console.log(err);
+        console.error('[User] getProfile failed:', err.message);
         return res.status(500).json({ error: err.message })
     })
 };

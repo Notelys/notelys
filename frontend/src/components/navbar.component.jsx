@@ -21,10 +21,9 @@ const Navbar = () => {
         if(access_token){
             api.get("/new-notification")
             .then(({ data }) => {
-                setUserAuth({ ...userAuth, ...data })
+                setUserAuth(prev => ({ ...prev, ...data }))
             })
             .catch(err => {
-                console.log(err);
             })
         }
 

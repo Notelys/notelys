@@ -46,7 +46,6 @@ const HomePage = () => {
         setBlogs(formatedData);
       })
       .catch((err) => {
-        console.log(err);
       });
   };
 
@@ -66,7 +65,6 @@ const HomePage = () => {
         setBlogs(formatedData);
       })
       .catch((err) => {
-        console.log(err);
       });
   };
 
@@ -77,7 +75,6 @@ const HomePage = () => {
         setTrendingBlogs(data.blogs);
       })
       .catch((err) => {
-        console.log(err);
       });
   };
 

@@ -29,8 +29,8 @@ router.post("/reset-password",  authLimiter, resetPassword);
 router.post("/refresh-token",   authLimiter, refreshToken);
 
 // ── Google OAuth 2.0 (server-side redirect flow) ──
-router.get("/api/auth/google", googleAuthRedirect);
-router.get("/api/auth/google/callback", googleAuthCallback);
+router.get("/auth/google", googleAuthRedirect);
+router.get("/auth/google/callback", googleAuthCallback);
 router.post("/exchange-auth-code", authLimiter, exchangeAuthCode);
 
 // ── Protected routes (JWT required) ──────────────

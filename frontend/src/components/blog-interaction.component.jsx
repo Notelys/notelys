@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { BlogContext } from "../pages/blog.page";
 import { Link } from "react-router-dom";
 import { UserContext } from "../App";
-import { Toaster, toast } from "react-hot-toast";
+import toast from "react-hot-toast";
 import api from "../common/api";
 import Icon from "./Icon";
 
@@ -30,7 +30,6 @@ const BlogInteraction = () => {
                 setLikedByUser(Boolean(result));
             })
             .catch(err => {
-                console.log(err);
             })
         }
 
@@ -41,16 +40,12 @@ const BlogInteraction = () => {
             // like the blog
             setLikedByUser(preVal => !preVal);
 
-            !isLikedByUser ? total_likes++ : total_likes--;
+            const newLikes = !isLikedByUser ? total_likes + 1 : total_likes - 1;
 
-            setBlog({ ...blog, activity: { ...activity, total_likes } })
+            setBlog({ ...blog, activity: { ...activity, total_likes: newLikes } })
 
             api.post("/like-blog", { _id, isLikedByUser })
-            .then(({ data }) => {
-                console.log(data);
-            })
             .catch(err => {
-                console.log(err);
             })
 
         }

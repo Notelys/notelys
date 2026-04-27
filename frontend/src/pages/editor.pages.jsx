@@ -25,7 +25,7 @@ const Editor = () => {
 
     const [ blog, setBlog ] = useState(blogStructure);
     const [ editorState, setEditorState ] = useState("editor");
-    const [ textEditor, setTextEditor ] = useState({ isReady: false });
+    const [ textEditor, setTextEditor ] = useState(null);
     const [ loading, setLoading ] = useState(true);
     
     let { userAuth: {access_token, username} } = useContext(UserContext);

@@ -20,6 +20,8 @@ const blogSchema = mongoose.Schema({
         maxlength: 200,
         // required: true
     },
+    // EditorJS saves { blocks: [...] }. Stored as an array for legacy reasons.
+    // Frontend handles both content[0].blocks and content.blocks patterns.
     content: {
         type: [Schema.Types.Mixed],
         // required: true

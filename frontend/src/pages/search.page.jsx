@@ -37,7 +37,7 @@ const SearchPage = () => {
         setBlogs(formatedData);
     })
     .catch((err) => {
-        console.log(err);
+        console.error('[Search] fetchUsers failed');
     });
 
   }
