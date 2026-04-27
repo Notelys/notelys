@@ -16,6 +16,9 @@ export const AUTH = {
     MAX_LOGIN_ATTEMPTS: 5,
     LOGIN_LOCKOUT_MS: 60_000,         // 60-second lockout after max failures
 
+    // OAuth authorization code (single-use, exchanged for tokens)
+    AUTH_CODE_EXPIRY_MS: 60_000,      // 60 seconds
+
     // JWT token expiration
     ACCESS_TOKEN_EXPIRY: '15m',
     REFRESH_TOKEN_EXPIRY: '30d',

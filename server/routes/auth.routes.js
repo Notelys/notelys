@@ -5,6 +5,7 @@ import {
     signin,
     googleAuthRedirect,
     googleAuthCallback,
+    exchangeAuthCode,
     verifyEmail,
     resendOtp,
     forgotPassword,
@@ -30,6 +31,7 @@ router.post("/refresh-token",   refreshToken);
 // ── Google OAuth 2.0 (server-side redirect flow) ──
 router.get("/api/auth/google", googleAuthRedirect);
 router.get("/api/auth/google/callback", googleAuthCallback);
+router.post("/exchange-auth-code", authLimiter, exchangeAuthCode);
 
 // ── Protected routes (JWT required) ──────────────
 router.post("/change-password", verifyJWT, changePassword);

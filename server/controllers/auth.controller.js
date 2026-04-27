@@ -1,6 +1,8 @@
+import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import User from '../Schema/User.js';
 import LoginAttempt from '../Schema/LoginAttempt.js';
+import AuthCode from '../Schema/AuthCode.js';
 import passport from 'passport';
 import { emailRegex, passwordRegex } from '../utils/regex.js';
 import { formatDatatoSend, generateUsername } from '../utils/helpers.js';
@@ -311,21 +313,18 @@ export const googleAuthCallback = (req, res, next) => {
                 );
             }
 
-            // Success — generate tokens and store hashed refresh token
-            const tokens = generateTokenPair(user._id);
-            const hashedRefreshToken = await bcrypt.hash(tokens.refresh_token, AUTH.SALT_ROUNDS);
-            await User.updateOne({ _id: user._id }, { refreshToken: hashedRefreshToken });
+            // Generate a short-lived, single-use authorization code
+            // instead of passing tokens directly in the URL.
+            const code = crypto.randomBytes(32).toString('hex');
 
-            // Redirect to frontend with tokens in URL params
-            const params = new URLSearchParams({
-                access_token: tokens.access_token,
-                refresh_token: tokens.refresh_token,
-                profile_img: user.personal_info.profile_img || '',
-                username: user.personal_info.username,
-                fullname: user.personal_info.fullname,
+            await AuthCode.create({
+                code,
+                userId: user._id,
+                expiresAt: new Date(Date.now() + AUTH.AUTH_CODE_EXPIRY_MS),
             });
 
-            return res.redirect(`${frontendUrl}/auth/callback?${params.toString()}`);
+            // Redirect with ONLY the opaque code — no tokens in the URL
+            return res.redirect(`${frontendUrl}/auth/callback?code=${code}`);
 
         } catch (error) {
             console.error('[Google Auth Callback Error]', error.message);
@@ -334,6 +333,54 @@ export const googleAuthCallback = (req, res, next) => {
             );
         }
     })(req, res, next);
+};
+
+// ─────────────────────────────────────────────
+// Exchange Auth Code — trades a one-time code for tokens
+// ─────────────────────────────────────────────
+export const exchangeAuthCode = async (req, res) => {
+    try {
+        const { code } = req.body;
+
+        if (!code) {
+            return res.status(422).json({ error: 'Authorization code is required' });
+        }
+
+        // Find and delete the code atomically (single-use)
+        const authCode = await AuthCode.findOneAndDelete({ code });
+
+        if (!authCode) {
+            return res.status(401).json({ error: 'Invalid or expired authorization code' });
+        }
+
+        // Check expiry (belt-and-suspenders — TTL index handles cleanup)
+        if (authCode.expiresAt < new Date()) {
+            return res.status(401).json({ error: 'Authorization code has expired' });
+        }
+
+        // Load the user
+        const user = await User.findById(authCode.userId);
+        if (!user) {
+            return res.status(404).json({ error: ERRORS.USER_NOT_FOUND });
+        }
+
+        // Generate tokens and store hashed refresh token
+        const tokens = generateTokenPair(user._id);
+        const hashedRefreshToken = await bcrypt.hash(tokens.refresh_token, AUTH.SALT_ROUNDS);
+        await User.updateOne({ _id: user._id }, { refreshToken: hashedRefreshToken });
+
+        return res.status(200).json({
+            access_token: tokens.access_token,
+            refresh_token: tokens.refresh_token,
+            profile_img: user.personal_info.profile_img,
+            username: user.personal_info.username,
+            fullname: user.personal_info.fullname,
+        });
+
+    } catch (err) {
+        console.error('[Exchange Auth Code Error]', err.message);
+        return res.status(500).json({ error: ERRORS.SERVER_ERROR });
+    }
 };
 
 // ─────────────────────────────────────────────
