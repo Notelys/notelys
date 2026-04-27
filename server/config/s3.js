@@ -1,25 +1,30 @@
-import aws from 'aws-sdk';
+import { S3Client, PutObjectCommand, DeleteObjectCommand, DeleteObjectsCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { nanoid } from 'nanoid';
 
-const BUCKET = 'blog-app-82817';
+const BUCKET = process.env.AWS_BUCKET || 'blog-app-82817';
+const REGION = process.env.AWS_REGION || 'ap-south-1';
 
-// Setting up S3 bucket
-const s3 = new aws.S3({
-    region: 'ap-south-1',
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+// AWS SDK v3 — modular client (replaces deprecated aws-sdk v2)
+const s3 = new S3Client({
+    region: REGION,
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    },
 });
 
 export const generateUploadURL = async () => {
     const date = new Date();
     const imageName = `${nanoid()}-${date.getTime()}.jpeg`;
 
-    return await s3.getSignedUrlPromise('putObject', {
+    const command = new PutObjectCommand({
         Bucket: BUCKET,
         Key: imageName,
-        Expires: 1000,
-        ContentType: "image/jpeg"
+        ContentType: 'image/jpeg',
     });
+
+    return await getSignedUrl(s3, command, { expiresIn: 1000 });
 };
 
 /**
@@ -45,7 +50,7 @@ export const deleteFromS3 = async (imageUrl) => {
     if (!key) return;
 
     try {
-        await s3.deleteObject({ Bucket: BUCKET, Key: key }).promise();
+        await s3.send(new DeleteObjectCommand({ Bucket: BUCKET, Key: key }));
         console.log(`🗑️  S3 deleted: ${key}`);
     } catch (err) {
         console.error(`⚠️  S3 delete failed for ${key}:`, err.message);
@@ -64,13 +69,13 @@ export const deleteMultipleFromS3 = async (imageUrls) => {
     if (keys.length === 0) return;
 
     try {
-        await s3.deleteObjects({
+        await s3.send(new DeleteObjectsCommand({
             Bucket: BUCKET,
             Delete: {
                 Objects: keys.map(Key => ({ Key })),
                 Quiet: true,
             },
-        }).promise();
+        }));
         console.log(`🗑️  S3 batch deleted ${keys.length} image(s)`);
     } catch (err) {
         console.error(`⚠️  S3 batch delete failed:`, err.message);
