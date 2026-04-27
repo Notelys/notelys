@@ -5,7 +5,7 @@ export const uploadImage = async (img) => {
 
     let imgURL = null;
 
-    await api.get("/get-upload-url")
+    await api.get(`/get-upload-url?type=${encodeURIComponent(img.type)}`)
     .then( async ({ data: { uploadURL } }) => {
         // Use raw axios for S3 — NOT the `api` instance,
         // because the interceptor adds a JWT Authorization header
@@ -13,7 +13,7 @@ export const uploadImage = async (img) => {
         await axios({
             method: 'PUT',
             url: uploadURL,
-            headers: { 'Content-Type': 'image/jpeg' },
+            headers: { 'Content-Type': img.type },
             data: img
         })
         .then(() => {

@@ -14,14 +14,16 @@ const s3 = new S3Client({
     },
 });
 
-export const generateUploadURL = async () => {
+export const generateUploadURL = async (mimeType = 'image/jpeg') => {
     const date = new Date();
-    const imageName = `${nanoid()}-${date.getTime()}.jpeg`;
+    // Safely extract extension from mime type (e.g. "image/png" -> "png")
+    const ext = mimeType.split('/')[1] || 'jpeg';
+    const imageName = `${nanoid()}-${date.getTime()}.${ext}`;
 
     const command = new PutObjectCommand({
         Bucket: BUCKET,
         Key: imageName,
-        ContentType: 'image/jpeg',
+        ContentType: mimeType,
     });
 
     return await getSignedUrl(s3, command, { expiresIn: 1000 });
