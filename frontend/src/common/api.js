@@ -39,8 +39,13 @@ api.interceptors.response.use(
         const originalRequest = error.config;
         const status = error.response?.status;
 
-        // If 401 and we haven't retried yet
-        if (status === 401 && !originalRequest._retry) {
+        // Skip token-refresh for login-flow endpoints — a 401 here means
+        // invalid credentials or expired auth code, NOT an expired session.
+        const authFlowPaths = ['/exchange-auth-code', '/signin', '/signup', '/verify-email', '/refresh-token'];
+        const isAuthFlow = authFlowPaths.some(p => originalRequest.url?.includes(p));
+
+        // If 401 and we haven't retried yet (and it's not a login-flow endpoint)
+        if (status === 401 && !originalRequest._retry && !isAuthFlow) {
             // If already refreshing, queue the request
             if (isRefreshing) {
                 return new Promise(function(resolve, reject) {
