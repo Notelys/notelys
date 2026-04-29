@@ -9,7 +9,18 @@
     <meta name="description" content="A modern blogging platform — write, share, and discover stories. Powered by Editor.js with rich content editing, comments, and notifications." />
     <meta name="keywords" content="blog, writing, stories, articles, editor" />
     <meta name="theme-color" content="#242424" />
+    <link rel="canonical" href="https://notelys.org" />
     <title>Notelys</title>
+
+    <!-- Block search engines on dev environment -->
+    <script>
+      if (window.location.hostname === 'dev.notelys.org') {
+        var meta = document.createElement('meta');
+        meta.name = 'robots';
+        meta.content = 'noindex, nofollow';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
