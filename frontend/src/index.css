@@ -145,12 +145,12 @@
         @apply whitespace-nowrap text-white rounded-full py-3 px-6 text-xl capitalize
                font-semibold active:scale-[0.97];
         background: linear-gradient(135deg, rgb(var(--c-brand)), rgb(var(--c-accent)));
-        box-shadow: 0 2px 12px rgb(var(--c-brand) / 0.3);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: none;
+        transition: transform 0.2s ease;
     }
     .btn-brand:hover {
         transform: translateY(-1px);
-        box-shadow: 0 4px 20px rgb(var(--c-brand) / 0.4);
+        box-shadow: none;
     }
 
     /* ── Inputs ──────────────────────────────────── */
