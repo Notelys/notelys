@@ -107,8 +107,8 @@ const UserAuthForm = ( {type} ) => {
                             </span>
                             <h1 className="text-5xl font-bold leading-tight mb-4">
                                 {type == "sign-in" 
-                                    ? <>Where ideas <br/><span className="text-brand">come alive.</span></> 
-                                    : <>Start your <br/><span className="text-brand">writing journey.</span></>
+                                    ? <>Where ideas <br/><span className="text-brand text-5xl">come alive.</span></> 
+                                    : <>Start your <br/><span className="text-brand text-5xl">writing journey.</span></>
                                 }
                             </h1>
                             <p className="text-dark-grey text-2xl leading-relaxed">
