@@ -31,17 +31,7 @@ const HomePage = () => {
     "fitness",
   ];
 
-  const categoryEmojis = {
-    mindset: "🧠",
-    cooking: "🍳",
-    growth: "📈",
-    life: "🌱",
-    "social media": "📱",
-    "mental health": "💆",
-    discipline: "🎯",
-    lifestyle: "✨",
-    fitness: "💪",
-  };
+
 
   const fetchLatestBlogs = ({page = 1}) => {
     api
@@ -91,7 +81,7 @@ const HomePage = () => {
   };
 
   const loadBlogByCategory = (e) => {
-    let category = e.target.innerText.replace(/^.\s/, '').toLowerCase();
+    let category = e.target.innerText.trim().toLowerCase();
 
     setBlogs(null);
 
@@ -191,7 +181,7 @@ const HomePage = () => {
                       }
                       key={i}
                     >
-                      {categoryEmojis[category]} {category}
+                      {category}
                     </button>
                   );
                 })}
