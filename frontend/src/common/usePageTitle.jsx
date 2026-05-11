@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-const PRODUCTION_ORIGIN = "https://notelys.org";
+const PRODUCTION_ORIGIN = "https://kalamio.com";
 
 const usePageTitle = (title) => {
     const { pathname } = useLocation();
 
     useEffect(() => {
-        const baseTitle = "Notelys";
+        const baseTitle = "Kalamio";
         document.title = title ? (title === baseTitle ? baseTitle : `${title} — ${baseTitle}`) : baseTitle;
 
         // Update canonical URL to always point to production domain + current path

@@ -25,12 +25,12 @@ const getTransporter = () => {
  */
 export const sendVerificationEmail = async (email, otp) => {
     const mailOptions = {
-        from: `"Notelys" <${process.env.EMAIL_USER}>`,
+        from: `"Kalamio" <${process.env.EMAIL_USER}>`,
         to: email,
-        subject: 'Verify Your Email — Notelys',
+        subject: 'Verify Your Email — Kalamio',
         html: buildOtpEmailHtml({
             heading: 'Verify Your Email',
-            message: 'Welcome to Notelys! Use the code below to verify your email address.',
+            message: 'Welcome to Kalamio! Use the code below to verify your email address.',
             otp,
             footer: 'This code expires in 10 minutes. If you didn\'t create an account, ignore this email.',
         }),
@@ -44,9 +44,9 @@ export const sendVerificationEmail = async (email, otp) => {
  */
 export const sendPasswordResetEmail = async (email, otp) => {
     const mailOptions = {
-        from: `"Notelys" <${process.env.EMAIL_USER}>`,
+        from: `"Kalamio" <${process.env.EMAIL_USER}>`,
         to: email,
-        subject: 'Reset Your Password — Notelys',
+        subject: 'Reset Your Password — Kalamio',
         html: buildOtpEmailHtml({
             heading: 'Reset Your Password',
             message: 'You requested a password reset. Use the code below to set a new password.',
@@ -102,7 +102,7 @@ function buildOtpEmailHtml({ heading, message, otp, footer }) {
                         </tr>
                     </table>
                     <!-- Brand -->
-                    <p style="margin-top:24px; font-size:12px; color:#a1a1aa;">Notelys — Your Writing Space</p>
+                    <p style="margin-top:24px; font-size:12px; color:#a1a1aa;">Kalamio — Write to the world.</p>
                 </td>
             </tr>
         </table>

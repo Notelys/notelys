@@ -17,7 +17,7 @@ const HomePage = () => {
   let [trendingBlogs, setTrendingBlogs] = useState(null);
   let [pageState, setPageState] = useState("home");
 
-  usePageTitle(pageState === "home" ? "Notelys" : `#${pageState}`);
+  usePageTitle(pageState === "home" ? "Kalamio" : `#${pageState}`);
 
   let categories = [
     "mindset",

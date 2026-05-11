@@ -1,0 +1,42 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+
+        '--build-arg', 'VITE_SERVER_DOMAIN=https://kalamio.com/',
+
+        '-t',
+        'us-central1-docker.pkg.dev/$PROJECT_ID/kalamio/frontend:latest',
+
+        './frontend'
+      ]
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push',
+        'us-central1-docker.pkg.dev/$PROJECT_ID/kalamio/frontend:latest'
+      ]
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      [
+        'run',
+        'deploy',
+        'kalamio-web',
+        '--image',
+        'us-central1-docker.pkg.dev/$PROJECT_ID/kalamio/frontend:latest',
+        '--region',
+        'us-central1',
+        '--platform',
+        'managed',
+        '--allow-unauthenticated'
+      ]
+
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/kalamio/frontend:latest'
+
+options:
+  logging: CLOUD_LOGGING_ONLY

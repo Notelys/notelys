@@ -141,7 +141,7 @@ const UserAuthForm = ( {type} ) => {
                                 {type == "sign-in" ? "Welcome back" : "Join us today"}
                             </h1>
                             <h1 className="text-2xl font-bold mb-2 hidden lg:block">
-                                {type == "sign-in" ? "Sign in to Notelys" : "Create your account"}
+                                {type == "sign-in" ? "Sign in to Kalamio" : "Create your account"}
                             </h1>
                             <p className="text-dark-grey text-sm mb-8">
                                 {type == "sign-in" ? "Enter your credentials to continue" : "Fill in your details to get started"}

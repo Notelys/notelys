@@ -33,9 +33,9 @@ server.use(express.json({ limit: '10mb' }));
 const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:5174',
-    'https://notelys.org',
-    'https://www.notelys.org',
-    'https://dev.notelys.org',
+    'https://kalamio.com',
+    'https://www.kalamio.com',
+    'https://dev.kalamio.com',
     process.env.FRONTEND_URL,
 ].filter(Boolean);
 

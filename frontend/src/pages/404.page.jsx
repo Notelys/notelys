@@ -34,7 +34,7 @@ const PageNotFound = () => {
             </Link>
 
             <div className="mt-auto">
-                <img src={ theme === "light" ? darkFullLogo : lightFullLogo } className="h-8 object-contain block mx-auto select-none" alt="Notelys logo" />
+                <img src={ theme === "light" ? darkFullLogo : lightFullLogo } className="h-8 object-contain block mx-auto select-none" alt="Kalamio logo" />
                 <p className="mt-5 text-dark-grey text-sm">Read millions of stories around the world</p>
             </div>
 
