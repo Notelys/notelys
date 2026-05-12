@@ -29,7 +29,7 @@ export const ThemeContext = createContext({});
 const App = () => {
 
     const [userAuth, setUserAuth] = useState({});
-    const [theme, setTheme] = useState("light");
+    const [theme, setTheme] = useState("dark");
 
     useEffect(() => {
 
@@ -37,7 +37,7 @@ const App = () => {
         userInSession ? setUserAuth(JSON.parse(userInSession)) : setUserAuth({ access_token: null });
 
         // Restore saved theme (prevent flash on load)
-        let savedTheme = lookInSession("theme") || "light";
+        let savedTheme = lookInSession("theme") || "dark";
 
         // Block transitions on first paint to prevent flash
         document.documentElement.classList.add("no-transition");
