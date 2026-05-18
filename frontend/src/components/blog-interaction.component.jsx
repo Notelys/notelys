@@ -95,7 +95,7 @@ const BlogInteraction = () => {
 
                     {
                         username == author_username ?
-                        <Link to={`/editor/${blog_id}`} className="text-dark-grey hover:text-brand transition-colors flex items-center gap-1.5 text-sm font-medium">
+                        <Link to={`/editor/${blog_id}`} className="text-dark-grey hover:text-black transition-colors flex items-center gap-1.5 text-sm font-medium">
                             <Icon name="edit" className="text-xl" />
                             Edit
                         </Link> : ""
@@ -103,7 +103,7 @@ const BlogInteraction = () => {
 
                     <button 
                         onClick={handleShare}
-                        className="text-dark-grey hover:text-brand transition-colors flex items-center gap-1.5 text-sm font-medium"
+                        className="text-dark-grey hover:text-black transition-colors flex items-center gap-1.5 text-sm font-medium"
                     >
                         <Icon name="link" className="text-xl" />
                         Share

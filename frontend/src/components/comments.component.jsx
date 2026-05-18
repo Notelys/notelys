@@ -53,7 +53,7 @@ const CommentsContainer = () => {
                 onClick={() => setCommentsWrapper(false)}
             />
 
-            <div className={"max-sm:w-full fixed " + ( commentsWrapper ? "top-0 sm:right-0" : "top-[100%] sm:right-[-100%]" ) + " duration-500 ease-out max-sm:right-0 sm:top-0 w-[30%] min-w-[350px] h-full z-50 bg-white shadow-xl p-8 px-16 overflow-y-auto overflow-x-hidden"}>
+            <div className={"max-sm:w-full fixed " + ( commentsWrapper ? "top-0 sm:right-0" : "top-[100%] sm:right-[-100%]" ) + " duration-500 ease-out max-sm:right-0 sm:top-0 w-[30%] min-w-[350px] h-full z-50 bg-surface shadow-xl p-8 px-16 overflow-y-auto overflow-x-hidden"}>
                 
                 <div className="relative">
                     <h1 className="text-xl font-semibold">Comments</h1>
@@ -84,7 +84,7 @@ const CommentsContainer = () => {
                     total_parent_comments > totalParentCommentsLoaded ? 
                     <button 
                         onClick={loadMoreComments}
-                        className="text-brand font-medium p-2 px-4 hover:bg-brand/5 rounded-full flex items-center gap-2 mt-4 text-sm border border-brand/20 hover:border-brand/40 transition-all"
+                        className="text-dark-grey font-medium p-2 px-4 hover:text-black rounded-full flex items-center gap-2 mt-4 text-sm border border-border hover:border-dark-grey transition-all"
                     >
                         Load More
                     </button>

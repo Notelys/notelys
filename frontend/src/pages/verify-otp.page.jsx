@@ -117,7 +117,7 @@ const VerifyOtp = () => {
 
                 <form className="w-[80%] max-w-[400px] text-center" onSubmit={handleVerify}>
 
-                    <h1 className="text-4xl font-gelasio text-center mb-4">
+                    <h1 className="text-4xl font-bold font-display text-center mb-4">
                         Verify your email
                     </h1>
 
@@ -140,7 +140,7 @@ const VerifyOtp = () => {
                                 value={digit}
                                 onChange={e => handleChange(index, e.target.value)}
                                 onKeyDown={e => handleKeyDown(index, e)}
-                                className="w-12 h-14 text-center text-2xl font-bold border-2 border-grey rounded-lg focus:border-black focus:outline-none bg-grey/30 transition-colors"
+                                className="w-12 h-14 text-center text-2xl font-bold border-2 border-border rounded-lg focus:border-black focus:outline-none bg-grey/30 transition-colors"
                                 autoFocus={index === 0}
                             />
                         ))}

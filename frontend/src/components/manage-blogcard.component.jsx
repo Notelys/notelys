@@ -38,18 +38,18 @@ export const ManagePublishedBlogsCard = ({ blog }) => {
                 <div className="flex flex-col justify-between py-2 w-full min-w-[300px]">
 
                     <div>
-                        <Link to={`/blog/${blog_id}`} className="blog-title mb-4 hover:text-brand transition-colors">{title}</Link>
+                        <Link to={`/blog/${blog_id}`} className="blog-title mb-4 hover:text-black transition-colors">{title}</Link>
 
                         <p className="line-clamp-1 text-dark-grey text-sm mt-1">Published on {getDay(publishedAt)}</p>
                     </div>
 
                     <div className="flex gap-6 mt-3">
-                        <Link to={`/editor/${blog_id}`} className="text-dark-grey hover:text-brand transition-colors flex items-center gap-1 text-sm font-medium">
+                        <Link to={`/editor/${blog_id}`} className="text-dark-grey hover:text-black transition-colors flex items-center gap-1 text-sm font-medium">
                             <Icon name="edit" className="text-xl" />
                             Edit
                         </Link>
 
-                        <button className="lg:hidden text-dark-grey hover:text-brand transition-colors flex items-center gap-1 text-sm font-medium" onClick={() => setShowStat(preVal => !preVal)}>
+                        <button className="lg:hidden text-dark-grey hover:text-black transition-colors flex items-center gap-1 text-sm font-medium" onClick={() => setShowStat(preVal => !preVal)}>
                             <Icon name="bar_chart" className="text-xl" />
                             Stats
                         </button>
@@ -100,7 +100,7 @@ export const ManageDraftBlogPost = ({ blog }) => {
                 <p className="line-clamp-2 text-dark-grey text-sm">{ des.length ? des : "No Description" }</p>
 
                 <div className="flex gap-6 mt-3">
-                    <Link to={`/editor/${blog_id}`} className="text-dark-grey hover:text-brand transition-colors flex items-center gap-1 text-sm font-medium">
+                    <Link to={`/editor/${blog_id}`} className="text-dark-grey hover:text-black transition-colors flex items-center gap-1 text-sm font-medium">
                         <Icon name="edit" className="text-xl" />
                         Edit
                     </Link>

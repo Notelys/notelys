@@ -1,23 +1,31 @@
 import { Link } from "react-router-dom";
-import { getDay } from "../common/date";
 
 const MinimalBlogPost = ({ blog, index }) => {
     
-    let { title, blog_id: id, author: { personal_info: { fullname, username, profile_img } }, publishedAt } = blog;
+    let { title, blog_id: id, banner, author: { personal_info: { fullname } }, activity, readTime } = blog;
+    const readCount = activity?.total_reads || 0;
+    const displayReadTime = readTime || 1;
+
+    const formatCount = (n) => {
+        if (n >= 1000) return (n / 1000).toFixed(1) + "K";
+        return n;
+    };
 
     return(
-        <Link to={`blog/${id}`} className="flex gap-5 mb-6 p-3 -mx-3 rounded-radius-md hover:bg-grey/50 transition-colors group">
-            <h1 className={"blog-index " + (index < 3 ? "!text-brand/20" : "")}>{index < 10 ? "0" + (index + 1) : index + 1}</h1>
-
-            <div>
-                <div className="flex gap-2 items-center mb-4">
-                    <img src={profile_img} className="w-6 h-6 rounded-full flex-none border border-border" alt={fullname}/>
-                    <p className="line-clamp-1 text-sm">{fullname}</p>
-                    <span className="text-dark-grey text-sm">·</span>
-                    <p className="min-w-fit text-dark-grey text-sm">{ getDay(publishedAt) }</p>
+        <Link to={`/blog/${id}`} className="trending-item group">
+            <span className="trending-item__rank">{index + 1}</span>
+            
+            {banner && (
+                <div className="trending-item__thumb">
+                    <img src={banner} alt={title} />
                 </div>
+            )}
 
-                <h1 className="blog-title group-hover:text-brand transition-colors">{title}</h1>
+            <div className="trending-item__content">
+                <div className="trending-item__title">{title}</div>
+                <span className="trending-item__meta">
+                    {displayReadTime} min read · {readCount > 0 ? formatCount(readCount) + " reads" : fullname}
+                </span>
             </div>
         </Link>
     )

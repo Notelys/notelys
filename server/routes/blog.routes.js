@@ -12,7 +12,8 @@ import {
     isLikedByUser,
     userWrittenBlogs,
     userWrittenBlogsCount,
-    deleteBlog
+    deleteBlog,
+    batchIsLiked
 } from '../controllers/blog.controller.js';
 
 const router = Router();
@@ -32,5 +33,6 @@ router.post("/isliked-by-user", verifyJWT, isLikedByUser);
 router.post("/user-written-blogs", verifyJWT, userWrittenBlogs);
 router.post("/user-written-blogs-count", verifyJWT, userWrittenBlogsCount);
 router.post("/delete-blog", verifyJWT, deleteBlog);
+router.post("/batch-isliked", verifyJWT, batchIsLiked);
 
 export default router;

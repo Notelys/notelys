@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import Navbar from "./components/navbar.component";
+import MainLayout from "./components/main-layout.component";
 import { createContext, useEffect, useState, lazy, Suspense } from "react";
 import { lookInSession } from "./common/session";
 import { Toaster } from 'react-hot-toast';
@@ -29,19 +29,21 @@ export const ThemeContext = createContext({});
 const App = () => {
 
     const [userAuth, setUserAuth] = useState({});
-    const [theme, setTheme] = useState("light");
+    const [theme, setTheme] = useState("dark");
 
     useEffect(() => {
 
         let userInSession = lookInSession("user");
         userInSession ? setUserAuth(JSON.parse(userInSession)) : setUserAuth({ access_token: null });
 
-        // Restore saved theme (prevent flash on load)
-        let savedTheme = lookInSession("theme") || "light";
-
-        // Block transitions on first paint to prevent flash
+        // Restore saved theme (dark = default/no attr, light = explicit)
+        let savedTheme = lookInSession("theme") || "dark";
         document.documentElement.classList.add("no-transition");
-        document.documentElement.setAttribute("data-theme", savedTheme);
+        if (savedTheme === "light") {
+            document.documentElement.setAttribute("data-theme", "light");
+        } else {
+            document.documentElement.removeAttribute("data-theme");
+        }
         setTheme(savedTheme);
 
         // Re-enable transitions after first paint
@@ -56,12 +58,28 @@ const App = () => {
     return (
         <ThemeContext.Provider value={{ theme, setTheme }}>
             <UserContext.Provider value={{userAuth, setUserAuth}}>
-                <Toaster />
+                <Toaster 
+                    position="top-center"
+                    toastOptions={{
+                        duration: 3000,
+                        style: {
+                            background: theme === 'dark' ? '#2d2d2c' : '#fff',
+                            color: theme === 'dark' ? '#f5f5f5' : '#0f0f0f',
+                            border: `1px solid ${theme === 'dark' ? '#373735' : '#e6e6e6'}`,
+                            borderRadius: '12px',
+                            fontSize: '14px',
+                            fontFamily: "'DM Sans', sans-serif",
+                            boxShadow: theme === 'dark' 
+                                ? '0 10px 20px rgba(0,0,0,0.4)' 
+                                : '0 10px 20px rgba(0,0,0,0.08)',
+                        },
+                    }}
+                />
                 <Suspense fallback={<Loader />}>
                     <Routes>
                         <Route path="/editor" element={<Editor/>} />
                         <Route path="/editor/:blog_id" element={<Editor/>} />
-                        <Route path="/" element={<Navbar />} >
+                        <Route path="/" element={<MainLayout />} >
                             <Route index element={<HomePage />} />
                             <Route path="dashboard" element={<SideNav />} >
                                 <Route path="blogs" element={<ManageBlogs />} />

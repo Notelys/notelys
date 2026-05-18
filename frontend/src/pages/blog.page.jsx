@@ -9,6 +9,7 @@ import BlogInteraction from "../components/blog-interaction.component";
 import BlogPostCard from "../components/blog-post.component";
 import BlogContent from "../components/blog-content.component";
 import CommentsContainer, { fetchComments } from "../components/comments.component";
+import { saveReadingProgress } from "../components/keep-reading.component";
 
 
 export const blogStructure = {
@@ -62,6 +63,9 @@ const BlogPage = () => {
 
             setBlog(blog);
 
+            // Save for Keep Reading widget
+            saveReadingProgress(blog);
+
             api.post("/search-blogs", { tag: blog.tags[0], limit: 6, eliminate_blog: blog_id })
             .then(({ data }) => {
                 setSimilarBlogs(data.blogs);
@@ -113,7 +117,7 @@ const BlogPage = () => {
                         <img src={banner} className="aspect-video rounded-radius-lg" alt={title} />
 
                         <div className="mt-12">
-                            <h2>{title}</h2>
+                            <h2 className="font-display text-4xl font-semibold leading-tight">{title}</h2>
 
                             <div className="flex max-sm:flex-col justify-between my-8">
                                 <div className="flex gap-5 items-start">
@@ -122,7 +126,7 @@ const BlogPage = () => {
                                     <p className="capitalize">
                                         {fullname}
                                         <br />
-                                        <Link to={`/user/${author_username}`} className="text-dark-grey text-sm hover:text-brand transition-colors">@{author_username}</Link>
+                                        <Link to={`/user/${author_username}`} className="text-dark-grey text-sm hover:text-black transition-colors">@{author_username}</Link>
                                     </p>
 
                                 </div>

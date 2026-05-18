@@ -2,7 +2,7 @@
 
 [data-theme="dark"] .ce-toolbar__plus path,
 [data-theme="dark"] .ce-toolbar__settings-btn path {
-    fill: #F3F3F3;
+    fill: #A0A0A0;
 }
 
 [data-theme="dark"] .ce-toolbar__settings-btn:hover path,
@@ -15,7 +15,7 @@
 }
 
 [data-theme="dark"] .cdx-block span {
-    color: #E7E7E7;
+    color: #E0E0E0;
 }
 
 [data-theme="dark"] .ce-block.ce-block--selected .cdx-block,
@@ -33,7 +33,7 @@
 }
 
 [data-theme="dark"] .cdx-marker {
-    background: rgba(235, 90, 0, 0.3);
+    background: rgba(255, 255, 255, 0.15);
     color: #F3F3F3;
 }
 

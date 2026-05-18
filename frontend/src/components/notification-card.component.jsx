@@ -44,7 +44,7 @@ const NotificationCard = ({ data, index, notificationState }) => {
     }
 
     return (
-        <div className={"p-6 border-b border-grey border-l-black" + (!seen ? "border-l-2" : "" )}>
+        <div className={"p-6 border-b border-border " + (!seen ? "border-l-2 border-l-black" : "" )}>
             <div className="flex gap-5 mb-3">
                 <img src={profile_img} className="w-14 h-14 flex-none rounded-full" alt="User" />
                 <div className="w-full">
@@ -75,7 +75,7 @@ const NotificationCard = ({ data, index, notificationState }) => {
 
             {
                 type != 'like' ? 
-                <p className="ml-14 pl-5 font-gelasio text-xl my-5">{comment.comment}</p> 
+                <p className="ml-14 pl-5 font-inter text-xl my-5">{comment.comment}</p> 
                 : ""
             }
 
@@ -124,7 +124,7 @@ const NotificationCard = ({ data, index, notificationState }) => {
                         </div>
                     </div>
 
-                    <p className="ml-14 font-gelasio text-xl my-2">{reply.comment}</p>
+                    <p className="ml-14 font-inter text-xl my-2">{reply.comment}</p>
 
                     <button className="underline hover:text-black ml-14 mt-2" onClick={(e) => handleDelete(comment._id, "reply", e.target)}>Delete</button>
 

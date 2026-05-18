@@ -56,7 +56,7 @@ const ForgotPassword = () => {
                     !sent ? (
                         <form id="formElement" className="w-[80%] max-w-[400px]">
 
-                            <h1 className="text-4xl font-gelasio text-center mb-4">
+                            <h1 className="text-4xl font-bold font-display text-center mb-4">
                                 Forgot password?
                             </h1>
 
@@ -93,7 +93,7 @@ const ForgotPassword = () => {
 
                             <div className="text-6xl mb-6">📧</div>
 
-                            <h1 className="text-4xl font-gelasio mb-4">
+                            <h1 className="text-4xl font-bold font-display mb-4">
                                 Check your email
                             </h1>
 

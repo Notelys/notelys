@@ -159,7 +159,7 @@ const CommentCard = ({ index, leftVal, commentData }) => {
 
     return (
         <div className="w-full" style={{ paddingLeft: `${leftVal * 10}px` }}>
-            <div className="my-5 p-6 rounded-md border border-grey">
+            <div className="my-5 p-6 rounded-md border border-border">
                 <div className="flex gap-3 items-center mb-8">
                     <img src={profile_img} className="w-6 h-6 rounded-full" alt={commented_by_username} />
 
@@ -170,7 +170,7 @@ const CommentCard = ({ index, leftVal, commentData }) => {
                     <p className="min-w-full">{getDay(commentedAt)}</p>
                 </div>
 
-                <p className="font-gelasio text-xl ml-3">{comment}</p>
+                <p className="font-inter text-xl ml-3">{comment}</p>
 
                 <div className="flex gap-5 items-center mt-5">
                     {
@@ -197,7 +197,7 @@ const CommentCard = ({ index, leftVal, commentData }) => {
                         username == commented_by_username || username == blog_author ? 
                         <button 
                             onClick={deletComment}
-                            className="p-2 px-3 rounded-md border border-grey ml-auto hover:bg-red/30 hover:text-red flex items-center"
+                            className="p-2 px-3 rounded-md border border-border ml-auto hover:bg-red/30 hover:text-red flex items-center"
                         >
                             <Icon name="delete" className="pointer-events-none" />
                         </button> : ""

@@ -43,7 +43,7 @@ const InPageNavigation = ({ routes, defaultHidden = [], defaultActiveIndex = 0, 
     
     return(
         <>
-            <div className="relative mb-8 bg-white border-b border-border flex flex-nowrap overflow-x-auto">
+            <div className="relative mb-8 bg-surface border-b border-border flex flex-nowrap overflow-x-auto">
 
                 {/* Create buttons "home" & "trending blogs" */}
                 {
@@ -61,7 +61,7 @@ const InPageNavigation = ({ routes, defaultHidden = [], defaultActiveIndex = 0, 
                     })
                 }
 
-                <hr ref={activeTabLineRef} className="absolute bottom-0 duration-300 border-brand border-[1.5px] rounded-full" />
+                <hr ref={activeTabLineRef} className="absolute bottom-0 duration-300 border-black border-[1.5px] rounded-full" />
 
             </div>
             
