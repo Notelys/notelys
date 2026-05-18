@@ -51,7 +51,11 @@ const Navbar = () => {
 
     const changeTheme = () => {
         const newTheme = theme === "light" ? "dark" : "light";
-        document.documentElement.setAttribute("data-theme", newTheme);
+        if (newTheme === "light") {
+            document.documentElement.setAttribute("data-theme", "light");
+        } else {
+            document.documentElement.removeAttribute("data-theme");
+        }
         setTheme(newTheme);
         storeInSession("theme", newTheme);
     }
@@ -65,7 +69,7 @@ const Navbar = () => {
                     <img src={ theme === "light" ? darkLogo : lightLogo } className="w-full" alt="Kalamio logo"/>
                 </Link>
 
-                <div className={"absolute bg-white/90 backdrop-blur-lg w-full left-0 top-full mt-0.5 border-b border-border py-4 px-[5vw] md:border-0 md:block md:relative md:inset-0 md:p-0 md:w-auto md:show md:bg-transparent md:backdrop-blur-none " + (searchBoxVisibility ? "show" : "hide")}>
+                <div className={"absolute w-full left-0 top-full mt-0.5 border-b border-border py-4 px-[5vw] md:border-0 md:block md:relative md:inset-0 md:p-0 md:w-auto md:show md:bg-transparent md:backdrop-blur-none " + (searchBoxVisibility ? "show" : "hide")} style={{ background: 'rgb(var(--c-white) / 0.9)', backdropFilter: 'blur(16px)' }}>
                     <input 
                         type="text"
                         placeholder="Search"

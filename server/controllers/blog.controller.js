@@ -18,7 +18,7 @@ export const latestBlogs = (req, res) => {
     Blog.find({ draft: false })
     .populate("author", "personal_info.profile_img personal_info.username personal_info.fullname -_id")
     .sort({ "publishedAt": -1 })
-    .select("blog_id title des banner activity tags publishedAt -_id")
+    .select("blog_id title des banner activity tags readTime publishedAt")
     .limit(maxLimit)
     .skip((page - 1) * maxLimit)
     .then(blogs => {
@@ -49,8 +49,8 @@ export const trendingBlogs = (req, res) => {
 
     Blog.find({ draft: false })
     .populate("author", "personal_info.profile_img personal_info.username personal_info.fullname -_id")
-    .sort({ "activity.total_read": -1, "activity.total_likes": -1, "publishedAt": -1 })
-    .select("blog_id title publishedAt -_id")
+    .sort({ "activity.total_reads": -1, "activity.total_likes": -1, "publishedAt": -1 })
+    .select("blog_id title des banner activity tags readTime publishedAt -_id")
     .limit(5)
     .then(blogs => {
         return res.status(200).json({ blogs })
@@ -83,7 +83,7 @@ export const searchBlogs = (req, res) => {
     Blog.find(findQuery)
     .populate("author", "personal_info.profile_img personal_info.username personal_info.fullname -_id")
     .sort({ "publishedAt": -1 })
-    .select("blog_id title des banner activity tags publishedAt -_id")
+    .select("blog_id title des banner activity tags readTime publishedAt")
     .skip((page - 1) * maxLimit)
     .limit(maxLimit)
     .then(blogs => {
@@ -132,6 +132,35 @@ const sanitizeOptions = {
         'a': ['href', 'name', 'target'],
         'img': ['src', 'alt', 'title', 'width', 'height']
     }
+};
+
+// Calculate read time from EditorJS content blocks (200 WPM)
+const calculateReadTime = (content, title = '', des = '') => {
+    let totalWords = 0;
+
+    // Count title + description words
+    if (title) totalWords += title.split(/\s+/).filter(Boolean).length;
+    if (des) totalWords += des.split(/\s+/).filter(Boolean).length;
+
+    // Count words from content blocks
+    if (content && content.blocks) {
+        content.blocks.forEach(block => {
+            let text = '';
+            if (block.data) {
+                if (block.data.text) text = block.data.text;
+                if (block.data.caption) text += ' ' + block.data.caption;
+                if (block.data.items) {
+                    text += ' ' + (Array.isArray(block.data.items) ? block.data.items.join(' ') : '');
+                }
+                if (block.data.code) text += ' ' + block.data.code;
+            }
+            // Strip HTML tags
+            text = text.replace(/<[^>]*>/g, ' ');
+            totalWords += text.split(/\s+/).filter(Boolean).length;
+        });
+    }
+
+    return Math.max(1, Math.ceil(totalWords / 200));
 };
 
 // Create blog
@@ -189,7 +218,7 @@ export const createBlog = (req, res) => {
 
     if(id){
 
-        let updateData = { title, des, banner, content, tags, draft: draft ? draft : false };
+        let updateData = { title, des, banner, content, tags, draft: draft ? draft : false, readTime: calculateReadTime(content, title, des) };
 
         // If publishing a draft, update publishedAt to now
         if (!draft) {
@@ -208,7 +237,7 @@ export const createBlog = (req, res) => {
     } else{
         
         let blog = new Blog({
-            title, des, banner, content, tags, author: authorId, blog_id: blog_id, draft: Boolean(draft)
+            title, des, banner, content, tags, author: authorId, blog_id: blog_id, draft: Boolean(draft), readTime: calculateReadTime(content, title, des)
         })
 
         blog.save().then(blog => {
@@ -463,4 +492,24 @@ export const deleteBlog = (req, res) => {
         return res.status(500).json({ error: err.message });
     })
 
+};
+
+// Batch check liked status for multiple blogs
+export const batchIsLiked = (req, res) => {
+    let user_id = req.user;
+    let { blog_ids } = req.body;
+
+    if (!blog_ids || !Array.isArray(blog_ids) || blog_ids.length === 0) {
+        return res.status(200).json({ likedBlogs: [] });
+    }
+
+    Notification.find({ user: user_id, type: "like", blog: { $in: blog_ids } })
+    .select("blog")
+    .then(notifications => {
+        let likedBlogs = notifications.map(n => n.blog.toString());
+        return res.status(200).json({ likedBlogs });
+    })
+    .catch(err => {
+        return res.status(500).json({ error: err.message });
+    })
 };

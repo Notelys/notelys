@@ -16,15 +16,15 @@ const PageNotFound = () => {
 
             <div className="relative">
                 <img src={ theme === "light" ? darkPageNotFoundImg : lightPageNotFoundImg } className="select-none w-72 aspect-square object-cover rounded-radius-lg" alt="Page not found" />
-                <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-brand/10 text-brand font-bold text-sm px-4 py-1.5 rounded-full whitespace-nowrap">
+                <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-grey text-black font-bold text-sm px-4 py-1.5 rounded-full whitespace-nowrap">
                     404 — Not Found
                 </div>
             </div>
             
             <div>
-                <h1 className="text-4xl font-bold mb-4">Page not found</h1>
+                <h1 className="text-4xl font-bold font-display mb-4">Page not found</h1>
                 <p className="text-dark-grey text-xl leading-7 max-w-md mx-auto">
-                    The page you're looking for doesn't exist. Head back to the <Link to="/" className="text-brand font-semibold hover:underline">home page</Link>
+                    The page you're looking for doesn't exist. Head back to the <Link to="/" className="text-black font-semibold hover:underline">home page</Link>
                 </p>
             </div>
 

@@ -134,12 +134,12 @@ const ProfilePage = () => {
                     {/* Stats badges */}
                     <div className="flex gap-3">
                         <div className="flex items-center gap-2 bg-grey rounded-full py-2 px-4">
-                            <Icon name="article" className="text-brand text-xl" />
+                            <Icon name="article" className="text-black text-xl" />
                             <span className="font-semibold">{total_posts.toLocaleString()}</span>
                             <span className="text-dark-grey text-sm">Posts</span>
                         </div>
                         <div className="flex items-center gap-2 bg-grey rounded-full py-2 px-4">
-                            <Icon name="visibility" className="text-brand text-xl" />
+                            <Icon name="visibility" className="text-black text-xl" />
                             <span className="font-semibold">{total_reads.toLocaleString()}</span>
                             <span className="text-dark-grey text-sm">Reads</span>
                         </div>

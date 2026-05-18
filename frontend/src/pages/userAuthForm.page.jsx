@@ -102,13 +102,13 @@ const UserAuthForm = ( {type} ) => {
                     {/* Left: Brand panel */}
                     <div className="hidden lg:flex flex-col justify-center flex-1 pr-16">
                         <div className="mb-8">
-                            <span className="inline-block px-3 py-1 rounded-full bg-brand/10 text-brand text-sm font-semibold mb-6">
+                            <span className="inline-block px-3 py-1 rounded-full bg-grey text-black text-sm font-semibold mb-6">
                                 {type == "sign-in" ? "Welcome back" : "Get started free"}
                             </span>
                             <h1 className="text-5xl font-bold leading-tight mb-4">
                                 {type == "sign-in" 
-                                    ? <>Where ideas <br/><span className="text-brand text-5xl">come alive.</span></> 
-                                    : <>Start your <br/><span className="text-brand text-5xl">writing journey.</span></>
+                                    ? <>Where ideas <br/><span className="text-black text-5xl">come alive.</span></> 
+                                    : <>Start your <br/><span className="text-black text-5xl">writing journey.</span></>
                                 }
                             </h1>
                             <p className="text-dark-grey text-2xl leading-relaxed">
@@ -120,15 +120,15 @@ const UserAuthForm = ( {type} ) => {
                         </div>
                         <div className="flex items-center gap-6 text-dark-grey">
                             <div className="flex items-center gap-2">
-                                <Icon name="edit_note" className="text-brand" />
+                                <Icon name="edit_note" className="text-black" />
                                 <span className="text-sm">Rich Editor</span>
                             </div>
                             <div className="flex items-center gap-2">
-                                <Icon name="dark_mode" className="text-brand" />
+                                <Icon name="dark_mode" className="text-black" />
                                 <span className="text-sm">Dark Mode</span>
                             </div>
                             <div className="flex items-center gap-2">
-                                <Icon name="notifications" className="text-brand" />
+                                <Icon name="notifications" className="text-black" />
                                 <span className="text-sm">Real-time</span>
                             </div>
                         </div>
@@ -137,7 +137,7 @@ const UserAuthForm = ( {type} ) => {
                     {/* Right: Auth form */}
                     <div className="w-full max-w-[400px] lg:max-w-[420px] mx-auto lg:mx-0">
                         <form id="formElement" className="w-full bg-surface border border-border rounded-radius-xl p-8 lg:p-10" style={{ boxShadow: 'var(--shadow-lg)' }}>
-                            <h1 className="text-3xl font-bold mb-2 lg:hidden">
+                            <h1 className="text-3xl font-bold font-display mb-2 lg:hidden">
                                 {type == "sign-in" ? "Welcome back" : "Join us today"}
                             </h1>
                             <h1 className="text-2xl font-bold mb-2 hidden lg:block">
@@ -199,12 +199,12 @@ const UserAuthForm = ( {type} ) => {
                             <>
                                 <p className="mt-6 text-dark-grey text-sm text-center">
                                     Don't have an account?
-                                    <Link to="/signup" className="text-brand font-semibold ml-1 hover:underline">
+                                    <Link to="/signup" className="text-black font-semibold ml-1 hover:underline">
                                         Sign up
                                     </Link>
                                 </p>
                                 <p className="mt-2 text-dark-grey text-sm text-center">
-                                    <Link to="/forgot-password" className="text-dark-grey hover:text-brand transition-colors">
+                                    <Link to="/forgot-password" className="text-dark-grey hover:text-black transition-colors">
                                         Forgot password?
                                     </Link>
                                 </p>
@@ -212,7 +212,7 @@ const UserAuthForm = ( {type} ) => {
                             :
                             <p className="mt-6 text-dark-grey text-sm text-center">
                                 Already a member?
-                                <Link to="/signin" className="text-brand font-semibold ml-1 hover:underline">
+                                <Link to="/signin" className="text-black font-semibold ml-1 hover:underline">
                                     Sign in
                                 </Link>
                             </p>

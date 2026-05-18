@@ -196,8 +196,8 @@ const BlogEditor = () => {
                                     onError={handleImgError}
                                     />
                                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/10">
-                                    <div className="bg-white/90 backdrop-blur-sm rounded-full py-2 px-5 flex items-center gap-2 shadow-md">
-                                        <Icon name="add_photo_alternate" className="text-xl text-brand" />
+                                    <div className="bg-surface/90 backdrop-blur-sm rounded-full py-2 px-5 flex items-center gap-2 shadow-md">
+                                        <Icon name="add_photo_alternate" className="text-xl text-dark-grey" />
                                         <span className="text-sm font-medium">Change Cover</span>
                                     </div>
                                 </div>
@@ -215,7 +215,7 @@ const BlogEditor = () => {
                         <textarea
                             defaultValue={title}
                             placeholder="Blog Title"
-                            className="text-4xl font-bold w-full h-20 outline-none resize-none mt-10 leading-tight placeholder:opacity-30 bg-white"
+                            className="text-4xl font-bold w-full h-20 outline-none resize-none mt-10 leading-tight placeholder:opacity-30 bg-transparent"
                             onKeyDown={handleTitleKeyDown}
                             onChange={handleTitleChange}
                         ></textarea>

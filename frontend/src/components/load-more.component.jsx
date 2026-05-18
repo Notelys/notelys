@@ -7,7 +7,7 @@ const LoadMoreDataBtn = ({ state, fetchDataFun, additionalParam }) => {
         return (
             <button
             onClick={() => fetchDataFun({ ...additionalParam, page: state.page + 1})}
-            className="text-brand font-medium p-3 px-6 hover:bg-brand/5 rounded-full flex items-center gap-2 mx-auto mt-4 border border-brand/20 hover:border-brand/40 transition-all"
+            className="text-dark-grey font-medium p-3 px-6 hover:text-black rounded-full flex items-center gap-2 mx-auto mt-4 border border-border hover:border-dark-grey transition-all"
             >
                 <span>Load More</span>
                 <Icon name="expand_more" className="text-xl" />

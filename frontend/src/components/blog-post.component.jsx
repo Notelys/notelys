@@ -1,47 +1,80 @@
 import { Link } from "react-router-dom";
-import { getDay } from "../common/date";
+import { getRelativeTime } from "../common/date";
 import Icon from "./Icon";
 
-const BlogPostCard = ({ content, author }) => {
+const BlogPostCard = ({ content, author, isLiked = false }) => {
 
-   let { publishedAt, tags, title, des, banner, activity: { total_likes }, blog_id: id, content: blogContent } = content;
+   let { publishedAt, tags, title, des, banner, activity: { total_likes, total_comments }, blog_id: id, readTime } = content;
 
    let { fullname, profile_img, username } = author;
 
-   // Estimate read time from description length (rough heuristic)
-   const wordCount = des ? des.split(/\s+/).length * 8 : 0; // multiply by factor since des is truncated
-   const readTime = Math.max(1, Math.ceil(wordCount / 200));
+   const displayReadTime = readTime || 1;
+
+   const formatCount = (n) => {
+       if (n >= 1000) return (n / 1000).toFixed(1) + "K";
+       return n;
+   };
     
     return(
-        <Link to={`/blog/${id}`} className="card group flex gap-8 items-center p-5 mb-5">
-            <div className="w-full">
-                <div className="flex gap-2 items-center mb-4">
-                    <img src={profile_img} className="w-7 h-7 rounded-full flex-none border border-border" alt={fullname}/>
-                    <p className="line-clamp-1 font-medium text-sm">{fullname}</p>
-                    <span className="text-dark-grey text-sm">·</span>
-                    <p className="min-w-fit text-dark-grey text-sm">{ getDay(publishedAt) }</p>
-                </div>
+        <div className="feed-card">
 
-                <h1 className="blog-title group-hover:text-brand transition-colors">{title}</h1>
-
-                <p className="my-3 text-xl font-merriweather leading-7 text-dark-grey max-sm:hidden md:max-[1100px]:hidden line-clamp-2">{des}</p>
-
-                <div className="flex gap-4 mt-5 items-center">
-                    <span className="py-1.5 px-4 bg-grey text-sm rounded-full capitalize border border-transparent group-hover:border-border transition-colors">{tags[0]}</span>
-                    <span className="text-dark-grey text-sm">{readTime} min read</span>
-                    <span className="ml-auto flex items-center gap-1.5 text-dark-grey text-sm">
-                        <Icon name="favorite" className="text-xl" />
-                        { total_likes }
-                    </span>
-                </div>
-
+            {/* ── Author Row ── */}
+            <div className="feed-card__header">
+                <Link to={`/user/${username}`} className="feed-card__author">
+                    <img src={profile_img} className="feed-card__avatar" alt={fullname}/>
+                    <div className="feed-card__author-info">
+                        <span className="feed-card__author-name">{fullname}</span>
+                        <span className="feed-card__meta">{displayReadTime} min read · {getRelativeTime(publishedAt)}</span>
+                    </div>
+                </Link>
+                <button className="feed-card__menu" aria-label="More options">
+                    <Icon name="more_horiz" />
+                </button>
             </div>
 
-            <div className="h-28 aspect-square bg-grey rounded-radius-md flex-none overflow-hidden">
-                <img src={banner} className="w-full h-full aspect-square object-cover group-hover:scale-105 transition-transform duration-300" alt={title}/>
+            {/* ── Content: Title + Description + Tags (left) | Thumbnail (right) ── */}
+            <Link to={`/blog/${id}`} className="feed-card__body">
+                <div className="feed-card__text">
+                    <div className="feed-card__title">{title}</div>
+                    <p className="feed-card__description">{des}</p>
+
+                    {/* Tags inside text column */}
+                    {tags && tags.length > 0 && (
+                        <div className="feed-card__tags" onClick={(e) => e.preventDefault()}>
+                            {tags.slice(0, 3).map((tag, i) => (
+                                <Link key={i} to={`/search/${tag}`} className="feed-card__tag">#{tag}</Link>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {banner && (
+                    <div className="feed-card__thumbnail">
+                        <img src={banner} alt={title}/>
+                    </div>
+                )}
+            </Link>
+
+            {/* ── Action Bar ── */}
+            <div className="feed-card__actions">
+                <span className={`feed-card__action${isLiked ? " feed-card__action--like" : ""}`}>
+                    <Icon name={isLiked ? "favorite" : "favorite_border"} />
+                    <span>{total_likes > 0 ? formatCount(total_likes) : "0"}</span>
+                </span>
+                <span className="feed-card__action">
+                    <Icon name="chat_bubble_outline" />
+                    <span>{total_comments > 0 ? total_comments : "0"}</span>
+                </span>
+                <span className="feed-card__action">
+                    <Icon name="bookmark_border" />
+                    <span>Save</span>
+                </span>
+                <span className="feed-card__action feed-card__action--share">
+                    <Icon name="ios_share" />
+                    <span>Share</span>
+                </span>
             </div>
-        </Link>
-        
+        </div>
     )
 }
 

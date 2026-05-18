@@ -57,6 +57,10 @@ const blogSchema = mongoose.Schema({
         type: [Schema.Types.ObjectId],
         ref: 'comments'
     },
+    readTime: {
+        type: Number,
+        default: 1
+    },
     draft: {
         type: Boolean,
         default: false

@@ -103,7 +103,7 @@ const ResetPassword = () => {
                     !success ? (
                         <form id="resetForm" className="w-[80%] max-w-[400px]" onSubmit={handleReset}>
 
-                            <h1 className="text-4xl font-gelasio text-center mb-4">
+                            <h1 className="text-4xl font-bold font-display text-center mb-4">
                                 Reset password
                             </h1>
 
@@ -126,7 +126,7 @@ const ResetPassword = () => {
                                         value={digit}
                                         onChange={e => handleChange(index, e.target.value)}
                                         onKeyDown={e => handleKeyDown(index, e)}
-                                        className="w-12 h-14 text-center text-2xl font-bold border-2 border-grey rounded-lg focus:border-black focus:outline-none bg-grey/30 transition-colors"
+                                        className="w-12 h-14 text-center text-2xl font-bold border-2 border-border rounded-lg focus:border-black focus:outline-none bg-grey/30 transition-colors"
                                         autoFocus={index === 0}
                                     />
                                 ))}
@@ -160,7 +160,7 @@ const ResetPassword = () => {
 
                             <div className="text-6xl mb-6">✅</div>
 
-                            <h1 className="text-4xl font-gelasio mb-4">
+                            <h1 className="text-4xl font-bold font-display mb-4">
                                 Password reset!
                             </h1>
 
