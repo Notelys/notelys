@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
-import User from '../Schema/User.js';
+import User, { generateAvatar } from '../Schema/User.js';
 import LoginAttempt from '../Schema/LoginAttempt.js';
 import AuthCode from '../Schema/AuthCode.js';
 import passport from 'passport';
@@ -45,6 +45,7 @@ export const signup = async (req, res) => {
                 existingUser.personal_info.fullname = fullname;
                 existingUser.personal_info.password = hashed_password;
                 existingUser.personal_info.username = username;
+                existingUser.personal_info.profile_img = generateAvatar(fullname);
                 await existingUser.save();
 
                 // Generate and send OTP
@@ -70,6 +71,7 @@ export const signup = async (req, res) => {
                 password: hashed_password,
                 username,
                 isEmailVerified: false,
+                profile_img: generateAvatar(fullname),
             },
             provider: 'local',
         });
@@ -87,6 +89,7 @@ export const signup = async (req, res) => {
 
     } catch (err) {
         console.error('[Signup Error]', err.message);
+        console.error('[Signup Stack]', err.stack);
 
         if (err.code === 11000) {
             return res.status(409).json({ error: ERRORS.EMAIL_EXISTS });

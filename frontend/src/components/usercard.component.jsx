@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Avatar from "./Avatar";
 
 const UserCard = ({ user }) => {
 
@@ -6,7 +7,7 @@ const UserCard = ({ user }) => {
 
     return(
         <Link to={`/user/${username}`} className="flex gap-4 items-center mb-4 p-3 -mx-3 rounded-radius-md hover:bg-grey/50 transition-colors group">
-            <img src={profile_img} className="w-11 h-11 rounded-full flex-none border border-border object-cover" alt={fullname}/>
+            <Avatar src={profile_img} alt={fullname} size={44} />
 
             <div className="min-w-0">
                 <h1 className="font-medium text-base truncate group-hover:text-black transition-colors">{ fullname }</h1>

@@ -13,6 +13,7 @@ import LoadMoreDataBtn from "../components/load-more.component";
 import InPageNavigation from "../components/inpage-navigation.component";
 import PageNotFound from "./404.page";
 import Icon from "../components/Icon";
+import Avatar from "../components/Avatar";
 
 export const profileDataStructure = {
     personal_info: {
@@ -119,12 +120,8 @@ const ProfilePage = () => {
                     
                     {/* Avatar with gradient ring */}
                     <div className="relative">
-                        <div className="w-48 h-48 md:w-32 md:h-32 rounded-full p-[3px]" style={{ background: 'linear-gradient(135deg, rgb(var(--c-brand)), rgb(var(--c-accent)))' }}>
-                            <img
-                                src={profile_img}
-                                className="w-full h-full rounded-full border-[3px] border-white"
-                                alt={fullname}
-                            />
+                        <div className="w-48 h-48 md:w-32 md:h-32 rounded-full p-[3px] flex items-center justify-center" style={{ background: 'linear-gradient(135deg, rgb(var(--c-brand)), rgb(var(--c-accent)))' }}>
+                            <Avatar src={profile_img} alt={fullname} size={120} />
                         </div>
                     </div>
 

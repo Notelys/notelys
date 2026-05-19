@@ -7,6 +7,7 @@ import UserNavigationPanel from "./user-navigation.component";
 import api from "../common/api";
 import { storeInSession } from "../common/session";
 import Icon from "./Icon";
+import Avatar from "./Avatar";
 
 const Navbar = () => {
 
@@ -116,8 +117,7 @@ const Navbar = () => {
 
                             <div className="relative" onClick={handleUserNavPanel} onBlur={handleBlur}>
                                 <button className="w-12 h-12 mt-1">
-                                    <img src={profile_img} 
-                                    className="w-full h-full object-cover rounded-full border-2 border-border hover:border-brand transition-colors" alt="Profile"/>
+                                    <Avatar src={profile_img} alt="Profile" size={44} />
                                 </button>
 
                                 {

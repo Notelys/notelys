@@ -6,6 +6,7 @@ import CommentField from "./comment-field.component";
 import { BlogContext } from "../pages/blog.page";
 import api from "../common/api";
 import Icon from "./Icon";
+import Avatar from "./Avatar";
 
 const CommentCard = ({ index, leftVal, commentData }) => {
 
@@ -161,7 +162,7 @@ const CommentCard = ({ index, leftVal, commentData }) => {
         <div className="w-full" style={{ paddingLeft: `${leftVal * 10}px` }}>
             <div className="my-5 p-6 rounded-md border border-border">
                 <div className="flex gap-3 items-center mb-8">
-                    <img src={profile_img} className="w-6 h-6 rounded-full" alt={commented_by_username} />
+                    <Avatar src={profile_img} alt={commented_by_username} size={24} />
 
         
                     {/* <p className="line-clamp-1">{fullname} @{commented_by_username}</p> */}

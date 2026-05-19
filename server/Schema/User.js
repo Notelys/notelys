@@ -1,7 +1,32 @@
 import mongoose, { Schema } from "mongoose";
 
-let profile_imgs_name_list = ["Garfield", "Tinkerbell", "Annie", "Loki", "Cleo", "Angel", "Bob", "Mia", "Coco", "Gracie", "Bear", "Bella", "Abby", "Harley", "Cali", "Leo", "Luna", "Jack", "Felix", "Kiki"];
-let profile_imgs_collections_list = ["notionists-neutral", "adventurer-neutral", "fun-emoji"];
+const AVATAR_COLORS = [
+    "#6D5D4B", // warm taupe
+    "#7A6A58", // muted brown
+    "#6B7A6A", // sage green
+    "#60727A", // dusty blue
+    "#7A6672", // muted plum
+    "#8A7458", // soft amber
+    "#6F6A84", // muted indigo
+    "#7C7C68", // olive grey
+];
+
+/**
+ * Generate an avatar string from a full name.
+ * Format: "avatar:#HEX:INITIALS"
+ * e.g. "avatar:#6D5D4B:HS" for "Harish Sehlangia"
+ */
+export function generateAvatar(fullname) {
+    const color = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
+    const parts = fullname.trim().split(/\s+/);
+    let initials;
+    if (parts.length >= 2) {
+        initials = (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    } else {
+        initials = parts[0][0].toUpperCase();
+    }
+    return `avatar:${color}:${initials}`;
+}
 
 const userSchema = mongoose.Schema({
 
@@ -38,9 +63,7 @@ const userSchema = mongoose.Schema({
         },
         profile_img: {
             type: String,
-            default: () => {
-                return `https://api.dicebear.com/6.x/${profile_imgs_collections_list[Math.floor(Math.random() * profile_imgs_collections_list.length)]}/svg?seed=${profile_imgs_name_list[Math.floor(Math.random() * profile_imgs_name_list.length)]}`
-            } 
+            default: ""
         },
     },
     social_links: {
