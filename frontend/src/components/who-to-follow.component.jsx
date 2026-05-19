@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import api from "../common/api";
 import { UserContext } from "../App";
+import Avatar from "./Avatar";
 
 const WhoToFollow = () => {
 
@@ -36,11 +37,7 @@ const WhoToFollow = () => {
                     return (
                         <div key={i} className="who-to-follow__item">
                             <Link to={`/user/${username}`} className="who-to-follow__user">
-                                <img
-                                    src={profile_img}
-                                    alt={fullname}
-                                    className="who-to-follow__avatar"
-                                />
+                                <Avatar src={profile_img} alt={fullname} size={36} />
                                 <div className="who-to-follow__info">
                                     <span className="who-to-follow__name">{fullname}</span>
                                     <span className="who-to-follow__handle">@{username}</span>

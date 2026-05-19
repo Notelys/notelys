@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import InputBox from "../components/input.component";
 import { uploadImage } from "../common/aws";
 import { storeInSession } from "../common/session";
+import Avatar from "../components/Avatar";
 
 const EditProfile = () => {
 
@@ -48,11 +49,13 @@ const EditProfile = () => {
 
     const handleImagePreview = (e) => {
 
-        let img = e.target.files[0];
+        profileImgEle.current.innerHTML = '';
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(e.target.files[0]);
+        img.className = 'w-full h-full object-cover';
+        profileImgEle.current.appendChild(img);
 
-        profileImgEle.current.src = URL.createObjectURL(img);
-
-        setUpdatedProfileImg(img);
+        setUpdatedProfileImg(e.target.files[0]);
 
     }
 
@@ -160,10 +163,15 @@ const EditProfile = () => {
                         <div className="max-lg:center mb-5">
                             <label htmlFor="uploadImg" id="profileImgLable"
                             className="relative block w-48 h-48 bg-grey rounded-full overflow-hidden">
-                                <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center text-white bg-black/50 opacity-0 hover:opacity-100 cursor-pointer">
+                                <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center text-white bg-black/50 opacity-0 hover:opacity-100 cursor-pointer z-10">
                                     Upload Image
                                 </div>
-                                <img ref={profileImgEle} src={profile_img} alt="Profile" />
+                                {updatedProfileImg ? 
+                                    <img ref={profileImgEle} src={profile_img} alt="Profile" className="w-full h-full object-cover" />
+                                    : <div ref={profileImgEle} className="w-full h-full flex items-center justify-center">
+                                        <Avatar src={profile_img} alt="Profile" size={192} />
+                                    </div>
+                                }
                             </label>
                             <input type="file" id="uploadImg" accept=".jpeg, .png, .jpg" hidden onChange={handleImagePreview} />
 

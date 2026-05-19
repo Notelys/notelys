@@ -6,6 +6,7 @@ import BottomTabBar from "./bottom-tab-bar.component";
 import MobileTopBar from "./mobile-top-bar.component";
 import UserNavigationPanel from "./user-navigation.component";
 import Icon from "./Icon";
+import Avatar from "./Avatar";
 import api from "../common/api";
 import { useEffect } from "react";
 
@@ -68,11 +69,7 @@ const MainLayout = () => {
                         {access_token ? (
                             <div className="relative" onClick={() => setUserNavPanel(v => !v)} onBlur={handleBlur}>
                                 <button className="w-9 h-9">
-                                    <img
-                                        src={profile_img}
-                                        className="w-full h-full object-cover rounded-full border border-border hover:border-dark-grey transition-colors"
-                                        alt="Profile"
-                                    />
+                                    <Avatar src={profile_img} alt="Profile" size={36} />
                                 </button>
                                 {userNavPanel && <UserNavigationPanel />}
                             </div>

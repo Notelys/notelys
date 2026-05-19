@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { getRelativeTime } from "../common/date";
 import Icon from "./Icon";
+import Avatar from "./Avatar";
 
 const BlogPostCard = ({ content, author, isLiked = false }) => {
 
@@ -21,7 +22,7 @@ const BlogPostCard = ({ content, author, isLiked = false }) => {
             {/* ── Author Row ── */}
             <div className="feed-card__header">
                 <Link to={`/user/${username}`} className="feed-card__author">
-                    <img src={profile_img} className="feed-card__avatar" alt={fullname}/>
+                    <Avatar src={profile_img} alt={fullname} size={32} className="feed-card__avatar" />
                     <div className="feed-card__author-info">
                         <span className="feed-card__author-name">{fullname}</span>
                         <span className="feed-card__meta">{displayReadTime} min read · {getRelativeTime(publishedAt)}</span>

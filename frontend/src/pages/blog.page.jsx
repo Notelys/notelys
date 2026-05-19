@@ -10,6 +10,7 @@ import BlogPostCard from "../components/blog-post.component";
 import BlogContent from "../components/blog-content.component";
 import CommentsContainer, { fetchComments } from "../components/comments.component";
 import { saveReadingProgress } from "../components/keep-reading.component";
+import Avatar from "../components/Avatar";
 
 
 export const blogStructure = {
@@ -121,7 +122,7 @@ const BlogPage = () => {
 
                             <div className="flex max-sm:flex-col justify-between my-8">
                                 <div className="flex gap-5 items-start">
-                                    <img src={profile_img} className="w-12 h-12 rounded-full border-2 border-border" alt={fullname}/>
+                                    <Avatar src={profile_img} alt={fullname} size={48} />
 
                                     <p className="capitalize">
                                         {fullname}

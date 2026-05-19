@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { getDay } from "../common/date";
 import { useContext, useState } from "react";
+import Avatar from "./Avatar";
 import NotificationCommentField from "./notification-comment-field.component";
 import { UserContext } from "../App";
 import api from "../common/api";
@@ -46,7 +47,7 @@ const NotificationCard = ({ data, index, notificationState }) => {
     return (
         <div className={"p-6 border-b border-border " + (!seen ? "border-l-2 border-l-black" : "" )}>
             <div className="flex gap-5 mb-3">
-                <img src={profile_img} className="w-14 h-14 flex-none rounded-full" alt="User" />
+                <Avatar src={profile_img} alt="User" size={56} />
                 <div className="w-full">
                     <h1 className="font-medium text-xl text-dark-grey">
                         <span className="lg:inline-block hidden capitalize">{fullname}</span>
@@ -110,7 +111,7 @@ const NotificationCard = ({ data, index, notificationState }) => {
                 reply ? 
                 <div className="ml-20 p-5 bg-grey mt-5 rounded-md">
                     <div className="flex gap-3 mb-3">
-                        <img src={author_profile_img} className="w-8 h-8 rounded-full" alt="Author" />
+                        <Avatar src={author_profile_img} alt="Author" size={32} />
 
                         <div>
                             <h1 className="font-medium text-xl text-dark-grey">
