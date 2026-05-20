@@ -1216,3 +1216,119 @@ body,
 .cdx-settings-button[data-tune='stretched'] {
   display: none;
 }
+
+/* ═══════════════════════════════════════════════
+   FOLLOW SYSTEM
+   ═══════════════════════════════════════════════ */
+
+/* ── Follow Button ────────────────────────────── */
+.follow-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    border: none;
+    border-radius: 9999px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.follow-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.follow-btn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+/* Sizes */
+.follow-btn--sm {
+    font-size: 13px;
+    padding: 6px 16px;
+}
+
+.follow-btn--md {
+    font-size: 14px;
+    padding: 8px 24px;
+}
+
+/* State: Not following — prominent CTA */
+.follow-btn--follow {
+    background: rgb(var(--c-black));
+    color: rgb(var(--c-white));
+}
+
+.follow-btn--follow:hover:not(:disabled) {
+    opacity: 0.85;
+}
+
+/* State: Following — muted outline */
+.follow-btn--following {
+    background: transparent;
+    color: rgb(var(--c-black));
+    border: 1.5px solid rgb(var(--c-border));
+}
+
+.follow-btn--following:hover:not(:disabled) {
+    border-color: rgb(var(--c-dark-grey));
+}
+
+/* State: Hover while following — red unfollow */
+.follow-btn--unfollow {
+    background: rgb(var(--c-red) / 0.08);
+    color: rgb(var(--c-red));
+    border: 1.5px solid rgb(var(--c-red) / 0.3);
+}
+
+.follow-btn--unfollow:hover:not(:disabled) {
+    background: rgb(var(--c-red) / 0.12);
+    border-color: rgb(var(--c-red) / 0.5);
+}
+
+/* ── Follows You Badge ────────────────────────── */
+.follows-you-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: rgb(var(--c-grey));
+    color: rgb(var(--c-dark-grey));
+    letter-spacing: 0.01em;
+}
+
+/* ── Following Empty State ────────────────────── */
+.following-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 24px;
+    gap: 12px;
+}
+
+.following-empty__icon {
+    font-size: 48px !important;
+    color: rgb(var(--c-dark-grey) / 0.4);
+    margin-bottom: 8px;
+}
+
+.following-empty__title {
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    color: rgb(var(--c-black));
+    line-height: 1.3 !important;
+}
+
+.following-empty__text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: rgb(var(--c-dark-grey));
+    max-width: 360px;
+    line-height: 1.5;
+}

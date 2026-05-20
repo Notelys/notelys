@@ -18,10 +18,11 @@ const HomePage = () => {
   let [pageState, setPageState] = useState("home");
   let [likedBlogs, setLikedBlogs] = useState([]);
   let [trendingFilter, setTrendingFilter] = useState("all");
+  let [followingBlogs, setFollowingBlogs] = useState(null);
 
   let { userAuth: { access_token } } = useContext(UserContext);
 
-  usePageTitle(pageState === "home" ? "Notelys" : `#${pageState}`);
+  usePageTitle(pageState === "home" ? "Kalamio" : `#${pageState}`);
 
   let categories = [
     "For You",
@@ -85,6 +86,23 @@ const HomePage = () => {
       });
   };
 
+  // Following feed — blogs from people you follow
+  const fetchFollowingBlogs = ({ page = 1 }) => {
+    if (!access_token) return;
+    
+    api.post("/follow-feed", { page })
+      .then(async ({ data }) => {
+        let formatedData = await filterPaginationData({
+          state: followingBlogs,
+          data: data.blogs,
+          page,
+          countRoute: "/follow-feed-count",
+        });
+        setFollowingBlogs(formatedData);
+      })
+      .catch(() => {});
+  };
+
   const loadBlogByCategory = (category) => {
     setBlogs(null);
 
@@ -119,7 +137,10 @@ const HomePage = () => {
   useEffect(() => {
     if (pageState === "home") {
       fetchLatestBlogs({ page: 1 });
-    } else if (pageState === "following" || pageState === "trending") {
+    } else if (pageState === "following") {
+      setFollowingBlogs(null);
+      fetchFollowingBlogs({ page: 1 });
+    } else if (pageState === "trending") {
       // handled separately
     } else {
       fetchBlogsByCategory({ page: 1 });
@@ -175,7 +196,34 @@ const HomePage = () => {
           {/* Blog feed */}
           <div className="home-feed__list">
             {pageState === "following" ? (
-              <NoDataMessage message="Follow writers to see their blogs here" />
+              // Following feed
+              !access_token ? (
+                <NoDataMessage message="Sign in to see blogs from people you follow" />
+              ) : followingBlogs == null ? (
+                <Loader />
+              ) : followingBlogs.results?.length ? (
+                <>
+                  {followingBlogs.results.map((blog, i) => (
+                    <AnimationWrapper
+                      key={blog.blog_id}
+                      transition={{ duration: 0.4, delay: i * 0.04 }}
+                    >
+                      <BlogPostCard
+                        content={blog}
+                        author={blog.author.personal_info}
+                        isLiked={likedBlogs.includes(blog._id)}
+                      />
+                    </AnimationWrapper>
+                  ))}
+                  <LoadMoreDataBtn state={followingBlogs} fetchDataFun={fetchFollowingBlogs} />
+                </>
+              ) : (
+                <div className="following-empty">
+                  <Icon name="group_add" className="following-empty__icon" />
+                  <h3 className="following-empty__title">Your Following feed is empty</h3>
+                  <p className="following-empty__text">Follow writers to see their blogs here. Check out "Who to follow" in the sidebar!</p>
+                </div>
+              )
             ) : pageState === "trending" ? (
               <>
                 <div className="trending-subtabs">

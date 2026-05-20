@@ -14,6 +14,7 @@ import InPageNavigation from "../components/inpage-navigation.component";
 import PageNotFound from "./404.page";
 import Icon from "../components/Icon";
 import Avatar from "../components/Avatar";
+import FollowButton from "../components/follow-button.component";
 
 export const profileDataStructure = {
     personal_info: {
@@ -24,7 +25,9 @@ export const profileDataStructure = {
     },
     account_info: {
         total_posts: 0,
-        total_reads: 0
+        total_reads: 0,
+        total_followers: 0,
+        total_following: 0,
     },
     social_links: {},
     joinedAt: ""
@@ -38,22 +41,30 @@ const ProfilePage = () => {
     let [ loading, setLoading ] = useState(true);
     let [ blogs, setBlogs ] = useState(null);
     let [ profileLoaded, setProfileLoaded ] = useState("");
+    let [ followsYou, setFollowsYou ] = useState(false);
 
     let { 
         personal_info: { fullname, username: profile_username, profile_img, bio }, 
-        account_info: { total_posts, total_reads },
-        social_links, joinedAt
+        account_info: { total_posts, total_reads, total_followers, total_following },
+        social_links, joinedAt, _id: profileUserId
         } = profile;
 
     usePageTitle(profile_username ? `@${profile_username}` : 'Profile');
 
-    let { userAuth: { username } } = useContext(UserContext);
+    let { userAuth: { username, access_token } } = useContext(UserContext);
 
     const fetchUserProfile = () => {
         api.post("/get-profile", {username: profileId})
         .then(({ data: user }) => {
             if(user != null){
                 setProfile(user);
+
+                // Check if this user follows you back (for badge)
+                if (access_token && username && user.personal_info.username !== username) {
+                    api.post("/is-following-back", { user_id: user._id })
+                        .then(({ data }) => setFollowsYou(data.follows_you))
+                        .catch(() => {});
+                }
             }
             setProfileLoaded(profileId);
             getBlogs({ user_id: user._id });
@@ -107,7 +118,20 @@ const ProfilePage = () => {
         setProfile(profileDataStructure);
         setLoading(true);
         setProfileLoaded("");
+        setFollowsYou(false);
     }
+
+    // Track follower count locally for instant UI update
+    const [localFollowers, setLocalFollowers] = useState(null);
+    useEffect(() => {
+        setLocalFollowers(total_followers);
+    }, [total_followers]);
+
+    const handleFollowChange = (isNowFollowing) => {
+        setLocalFollowers(prev => prev + (isNowFollowing ? 1 : -1));
+    };
+
+    const displayFollowers = localFollowers ?? total_followers;
 
     return (
       <AnimationWrapper>
@@ -128,8 +152,13 @@ const ProfilePage = () => {
                     <h1 className="text-2xl font-bold">@{profile_username}</h1>
                     <p className="text-xl capitalize text-dark-grey">{fullname}</p>
 
+                    {/* Follows you badge */}
+                    {followsYou && profileId !== username && (
+                        <span className="follows-you-badge">Follows you</span>
+                    )}
+
                     {/* Stats badges */}
-                    <div className="flex gap-3">
+                    <div className="flex gap-3 flex-wrap">
                         <div className="flex items-center gap-2 bg-grey rounded-full py-2 px-4">
                             <Icon name="article" className="text-black text-xl" />
                             <span className="font-semibold">{total_posts.toLocaleString()}</span>
@@ -139,6 +168,16 @@ const ProfilePage = () => {
                             <Icon name="visibility" className="text-black text-xl" />
                             <span className="font-semibold">{total_reads.toLocaleString()}</span>
                             <span className="text-dark-grey text-sm">Reads</span>
+                        </div>
+                        <div className="flex items-center gap-2 bg-grey rounded-full py-2 px-4">
+                            <Icon name="group" className="text-black text-xl" />
+                            <span className="font-semibold">{displayFollowers.toLocaleString()}</span>
+                            <span className="text-dark-grey text-sm">Followers</span>
+                        </div>
+                        <div className="flex items-center gap-2 bg-grey rounded-full py-2 px-4">
+                            <Icon name="person_add" className="text-black text-xl" />
+                            <span className="font-semibold">{total_following.toLocaleString()}</span>
+                            <span className="text-dark-grey text-sm">Following</span>
                         </div>
                     </div>
 
@@ -152,7 +191,11 @@ const ProfilePage = () => {
                             Edit Profile
                         </Link>
                         ) : (
-                        " "
+                        <FollowButton
+                            targetUserId={profileUserId}
+                            onFollowChange={handleFollowChange}
+                            size="md"
+                        />
                         )}
                     </div>
 

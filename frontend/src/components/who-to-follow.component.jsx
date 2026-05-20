@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import api from "../common/api";
 import { UserContext } from "../App";
 import Avatar from "./Avatar";
+import FollowButton from "./follow-button.component";
 
 const WhoToFollow = () => {
 
     const [users, setUsers] = useState(null);
-    const { userAuth: { username: currentUser } } = useContext(UserContext);
+    const { userAuth: { username: currentUser, access_token } } = useContext(UserContext);
 
     useEffect(() => {
         api.post("/search-users", { query: "" })
@@ -43,12 +44,19 @@ const WhoToFollow = () => {
                                     <span className="who-to-follow__handle">@{username}</span>
                                 </div>
                             </Link>
-                            <Link
-                                to={`/user/${username}`}
-                                className="who-to-follow__follow-btn"
-                            >
-                                Follow
-                            </Link>
+                            {access_token ? (
+                                <FollowButton
+                                    targetUserId={user._id}
+                                    size="sm"
+                                />
+                            ) : (
+                                <Link
+                                    to="/signin"
+                                    className="who-to-follow__follow-btn"
+                                >
+                                    Follow
+                                </Link>
+                            )}
                         </div>
                     );
                 })}
