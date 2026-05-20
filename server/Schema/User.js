@@ -101,6 +101,18 @@ const userSchema = mongoose.Schema({
             type: Number,
             default: 0
         },
+        total_followers: {
+            type: Number,
+            default: 0
+        },
+        total_following: {
+            type: Number,
+            default: 0
+        },
+        total_connections: {
+            type: Number,
+            default: 0
+        },
     },
     google_auth: {
         type: Boolean,
